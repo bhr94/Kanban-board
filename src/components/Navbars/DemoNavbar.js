@@ -238,10 +238,10 @@ class DemoNavbar extends React.Component {
                        User Profile 
                     </Link>
                   
-                    <Link  class="link dim white    f6 f5-ns dib mr3"
+                    {/* <Link  class="link dim white    f6 f5-ns dib mr3"
                     to="/board-page" tag={Link} >
                        Board page 
-                    </Link>
+                    </Link> */}
                   </nav>
 
                 

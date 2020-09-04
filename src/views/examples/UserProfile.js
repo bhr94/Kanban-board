@@ -6,7 +6,8 @@ import UserNavbar from "components/Navbars/UserNavbar.js";
 import Modal from "react-modal";
 import {Button} from "reactstrap"
 import history from '../../history'
-import BoardPage from "./BoardPage";
+import {connect} from "react-redux"
+import createBoardAction from "../../redux/actions/createBoardAction"
 
 
 // import Modal from 'react-bootstrap/Modal'
@@ -21,14 +22,12 @@ class UserProfile extends React.Component {
           modalIsOpen: false,
           setModalIsOpen: true,
           inputValue: "",
-          boards: []
+          user: {
+            id:"",
+            name:""
+          }
       }
    }
-  
-     
-  // handleModal =() =>{
-  //   this.setState({modalIsOpen: !this.state.modalIsOpen})
-  // }
 
   openModal = () =>{
     this.setState({modalIsOpen: true})
@@ -39,28 +38,35 @@ class UserProfile extends React.Component {
   }
   
   inputOnChange =(event) =>{
-      this.setState({inputValue:event.target.value })
-    
+      this.setState({inputValue:event.target.value })    
   }
 
 
-  createBoard =() =>{
-    if(this.state.inputValue.length >0){
-      const board = {
-        title: this.state.inputValuex
-      }
-      this.state.boards.push(board)
-      history.push('/board-page');
+  handleClick = () =>{
+    this.setState({ modalIsOpen: false })
+    if(this.state.inputValue.length > 0) {
+        this.props.createBoard(this.state.inputValue)
+        // console.log("board title" + JSON.stringify(this.props.boards))
+        // history.push(`/board-page${this.state.user.name}/${this.state.user.id}/${this.state.inputValue}`); 
+        console.log("this.props" + this.props)
+        history.push(`/board-page/${this.state.inputValue}`)
+        // I want to make the board page query with the board name included
+
+      }   
+      else {
+        alert("please add a board name")
+        this.setState({ modalIsOpen: true })
+      } 
     }
-    else {
-      alert("please add a board name")
-    }    
-  }
+ 
+ goToBoard =(boardTitle) =>{
+  history.push(`/board-page/${boardTitle}`)
+ }
 
     render() {
+      const {boards} = this.props
       return (
           <div>
-          
               <UserNavbar/>
                  <main ref="main">
                  <div className="position-relative">
@@ -85,17 +91,34 @@ class UserProfile extends React.Component {
                   <Button variant="primary" onClick={this.closeModal}>
                      Close 
                   </Button>
-                <Button variant="primary" onClick={this.createBoard}>
+                <Button variant="primary" onClick={this.handleClick}>
                   Create a board 
                 </Button>
           </Modal>
-         {this.state.boards.map(board =>{
-            return <button>{board.title}</button>
-         })}
+           {console.log("this.props.boards" + this.props.boards)}      
+
+          {boards.length > 0?
+          boards.map((board,i) =>{
+              return <button key = {i} onCLick ={()=>this.goToBoard(board.boardTitle)}>{board.boardTitle}</button>
+         }):
+         null
+        }
           </div>
           
       )
     }
 }
 
-export default UserProfile;
+const mapStateToProps =(state) =>{
+  return {
+    boards: state.boards
+  }
+}
+
+const mapDispatchToProps = (dispatch) =>{
+  return {
+      createBoard: (boardTitle) =>dispatch(createBoardAction(boardTitle))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);

@@ -19,6 +19,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import history from './history'
 import "./index.css"
+import {createStore, applyMiddleware} from "redux";
+import {Provider} from "react-redux"
+import rootReducer from "./redux/reducers/rootReducer"
+import {createLogger} from "redux-logger"
+import thunkMiddleware from "redux-thunk"
 // require("history").createBrowserHistory
 
 import { Router, Route, Switch, Redirect } from "react-router-dom";
@@ -42,9 +47,12 @@ import BoardPage from "views/examples/BoardPage"
 import HomePage from "views/examples/HomePage";
 // import AdminLayout from "dashboard_app/layouts/Admin.js"
 // import AuthLayout from "dashboard_app/layouts/Auth.js";
+const logger = createLogger();
+const store = createStore(rootReducer, applyMiddleware(logger));
 
 ReactDOM.render(
-  <Router history = {history}>
+  <Provider store = {store}>
+    <Router history = {history}>
     <Switch>
       <Route path="/dashboard" exact render={props => <Index {...props} />} />
       <Route
@@ -65,7 +73,8 @@ ReactDOM.render(
         render={props => <Register {...props} />}
       />
       <Route
-        path="/board-page"
+        // path="/board-page/:userName/:userId/:boardName"
+        path="/board-page/:boardTitle"
         exact
         render={props => <BoardPage {...props} />}
       />
@@ -78,8 +87,10 @@ ReactDOM.render(
       {/* <Route path="/admin" render={props => <AdminLayout {...props} />} />
       <Route path="/auth" render={props => <AuthLayout {...props} />} />
       <Redirect from="/" to="/admin/index" /> */}
-      <Redirect to="/landing-page" />
+      <Redirect to="/landing-page"/>
     </Switch>
-  </Router>,
+  </Router>
+  </Provider>
+  ,
   document.getElementById("root")
 );
