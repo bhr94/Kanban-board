@@ -79,11 +79,7 @@ ReactDOM.render(
         render={props => <BoardPage {...props} />}
       />
 
-    <Route
-        path="/home"
-        exact
-        render={props => <HomePage {...props} />}
-      />
+    
       {/* <Route path="/admin" render={props => <AdminLayout {...props} />} />
       <Route path="/auth" render={props => <AuthLayout {...props} />} />
       <Redirect from="/" to="/admin/index" /> */}

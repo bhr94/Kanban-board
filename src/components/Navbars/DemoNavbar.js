@@ -218,10 +218,10 @@ class DemoNavbar extends React.Component {
                        Register 
                     </Link>
 
-                    <Link  class="link dim white    f6 f5-ns dib mr3"
+                    {/* <Link  class="link dim white    f6 f5-ns dib mr3"
                     to="/home" tag={Link} >
                        Home 
-                    </Link>
+                    </Link> */}
 
                     {/* <Link  class="link dim white    f6 f5-ns dib mr3"
                     to="/dashboard" tag={Link} >

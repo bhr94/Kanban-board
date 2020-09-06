@@ -101,19 +101,11 @@ class Login extends React.Component {
       <>
         <DemoNavbar />
         <main ref="main">
-          <section className="section section-shaped section-lg">
-            <div className="shape shape-style-1 bg-gradient-default">
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
             <Container className="pt-lg-7">
               <Row className="justify-content-center">
+                <Col>
+                    <img src={require("assets/img/theme/image1.png")}/>
+                </Col>
                 <Col lg="5">
                   <Card className="bg-secondary shadow border-0">
                     <CardHeader className="bg-white pb-5">
@@ -237,9 +229,10 @@ class Login extends React.Component {
                     </Col>
                   </Row>
                 </Col>
+                
               </Row>
+              
             </Container>
-          </section>
         </main>
         <SimpleFooter />
       </>

@@ -40,24 +40,24 @@ class CardsFooter extends React.Component {
           <Container className="container-lg">
             <Row>
               <Col className="mb-5 mb-md-0" md="6">
-                <Card className="card-lift--hover shadow border-0">
+                {/* <Card className="card-lift--hover shadow border-0">
                   <Link to="/landing-page">
                     <CardImg
                       alt="..."
                       src={require("assets/img/theme/landing.jpg")}
                     />
                   </Link>
-                </Card>
+                </Card> */}
               </Col>
               <Col className="mb-5 mb-lg-0" md="6">
-                <Card className="card-lift--hover shadow border-0">
+                {/* <Card className="card-lift--hover shadow border-0">
                   <Link to="/profile-page">
                     <CardImg
                       alt="..."
                       src={require("assets/img/theme/profile.jpg")}
                     />
                   </Link>
-                </Card>
+                </Card> */}
               </Col>
             </Row>
           </Container>

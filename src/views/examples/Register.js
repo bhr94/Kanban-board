@@ -95,17 +95,6 @@ class Register extends React.Component {
       <>
         <DemoNavbar />
         <main ref="main">
-          <section className="section section-shaped section-lg">
-            <div className="shape shape-style-1 bg-gradient-default">
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
             <Container className="pt-lg-7">
               <Row className="justify-content-center">
                 <Col lg="5">
@@ -245,16 +234,16 @@ class Register extends React.Component {
                           >
                             Create account
                           </Button>
-
-
                         </div>
                       </Form>
                     </CardBody>
                   </Card>
                 </Col>
+                <Col>
+                    <img src={require("assets/img/theme/image2.png")}/>
+                </Col>
               </Row>
             </Container>
-          </section>
         </main>
         <SimpleFooter />
       </>

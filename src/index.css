@@ -1,8 +1,12 @@
 body { 
-    background: url(https://natureconservancy-h.assetsadobe.com/is/image/content/dam/tnc/nature/en/photos/tnc_16935516.jpg?crop=0,432,7360,4048&wid=4000&hei=2200&scl=1.84) no-repeat center center fixed; 
+    /* background: url(https://natureconservancy-h.assetsadobe.com/is/image/content/dam/tnc/nature/en/photos/tnc_16935516.jpg?crop=0,432,7360,4048&wid=4000&hei=2200&scl=1.84) no-repeat center center fixed;  */
+   background-color: aqua;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
   }
 
+#root {
+  background: linear-gradient(135deg, #0079bf, #5067c5);
+}
