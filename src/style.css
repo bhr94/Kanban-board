@@ -127,3 +127,8 @@ body{
   height:100%;
 }
 
+.cardImg {
+  background: linear-gradient(135deg, #ff8906, #f25f4c);
+  width:200px;
+  height:130px;
+}

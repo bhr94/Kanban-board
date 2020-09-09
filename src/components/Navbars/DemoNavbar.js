@@ -204,19 +204,11 @@ class DemoNavbar extends React.Component {
                     </DropdownMenu>
                   </UncontrolledDropdown> */}
                   <nav>
-                  <Link  class="link dim white    f6 f5-ns dib mr3"
+                  <Link  class="link dim white    f6 f3-ns dib mr3"
                     to="/landing-page" tag={Link} >
                        Home 
                     </Link>
-                    <Link  class="link dim white    f6 f5-ns dib mr3"
-                    to="/login-page" tag={Link} >
-                       Login 
-                    </Link>
-
-                    <Link  class="link dim white    f6 f5-ns dib mr3"
-                    to="/register-page" tag={Link} >
-                       Register 
-                    </Link>
+                    
 
                     {/* <Link  class="link dim white    f6 f5-ns dib mr3"
                     to="/home" tag={Link} >
@@ -233,10 +225,10 @@ class DemoNavbar extends React.Component {
                     className="link dim white b f6 f5-ns dib mr3"
                     to="/profile-page" tag={Link} > Profile </Link> */}
 
-                    <Link  class="link dim white    f6 f5-ns dib mr3"
+                    {/* <Link  class="link dim white    f6 f5-ns dib mr3"
                     to="/user-profile" tag={Link} >
                        User Profile 
-                    </Link>
+                    </Link> */}
                   
                     {/* <Link  class="link dim white    f6 f5-ns dib mr3"
                     to="/board-page" tag={Link} >
@@ -249,7 +241,7 @@ class DemoNavbar extends React.Component {
 
                 
                 <Nav className="align-items-lg-center ml-lg-auto" navbar>
-                  <NavItem>
+                  {/* <NavItem>
                     <NavLink
                       className="nav-link-icon"
                       href="https://www.facebook.com/creativetim"
@@ -264,8 +256,8 @@ class DemoNavbar extends React.Component {
                     <UncontrolledTooltip delay={0} target="tooltip333589074">
                       Like us on Facebook
                     </UncontrolledTooltip>
-                  </NavItem>
-                  <NavItem>
+                  </NavItem> */}
+                  {/* <NavItem>
                     <NavLink
                       className="nav-link-icon"
                       href="https://www.instagram.com/creativetimofficial"
@@ -280,8 +272,8 @@ class DemoNavbar extends React.Component {
                     <UncontrolledTooltip delay={0} target="tooltip356693867">
                       Follow us on Instagram
                     </UncontrolledTooltip>
-                  </NavItem>
-                  <NavItem>
+                  </NavItem> */}
+                  {/* <NavItem>
                     <NavLink
                       className="nav-link-icon"
                       href="https://twitter.com/creativetim"
@@ -296,7 +288,7 @@ class DemoNavbar extends React.Component {
                     <UncontrolledTooltip delay={0} target="tooltip184698705">
                       Follow us on Twitter
                     </UncontrolledTooltip>
-                  </NavItem>
+                  </NavItem> */}
                   <NavItem>
                     <NavLink
                       className="nav-link-icon"
@@ -313,6 +305,16 @@ class DemoNavbar extends React.Component {
                       Star us on Github
                     </UncontrolledTooltip>
                   </NavItem>
+                  
+                  <Link  class="link dim white    f6 f3-ns dib mr3"
+                    to="/login-page" tag={Link} >
+                       Login 
+                    </Link>
+
+                    <Link  class="link dim white    f6 f3-ns dib mr3"
+                    to="/register-page" tag={Link} >
+                       Register 
+                    </Link>
                   {/* <NavItem className="d-none d-lg-block ml-lg-4">
                     <Button
                       className="btn-neutral btn-icon"

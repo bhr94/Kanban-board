@@ -38,58 +38,61 @@ import {
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
+import { connect } from "react-redux"
+import loadUserAction from "../../redux/actions/loadUserAction";
 
 class Login extends React.Component {
-  constructor(){
+  constructor() {
     super()
     this.state = {
       email: '',
       password: ''
     }
   }
- 
-  
 
 
-  onEmailChange = (event) =>{
-     this.setState({email: event.target.value})
+
+
+  onEmailChange = (event) => {
+    this.setState({ email: event.target.value })
   }
 
-  onPasswordChange = (event) =>{
-     this.setState({password: event.target.value})
+  onPasswordChange = (event) => {
+    this.setState({ password: event.target.value })
   }
-  
 
-  onSubmit = () =>{
+  handleLoadUser = (data) => {
+    this.props.loadUser(data.user.id, data.user.username, data.user.email, data.token)
+  }
 
+  onSubmit = () => {
     const bodyContent = JSON.stringify({
       email: this.state.email,
       password: this.state.password
     });
 
-    fetch('http://localhost:3000/login-page',{
+    fetch('http://localhost:3001/login-page', {
       method: "post",
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: bodyContent
     })
-    .then(response => response.json())
-    .then(user => {
-      if(user.id){
+      .then(response => response.json())
+      .then(data => {
+        if (data) {
+          this.handleLoadUser(data);
+          history.push('/user-profile');
+        }
+        else {
+          alert("failed to signin");
+        }
+      }
+      )
+      .catch(err => {
+        console.log("Failed to load the user " + err)
+      })
+  }
 
-        history.push('/profile-page');
-        // this.props.loadUser(user);
-        // this.props.onRouteChange('user-page');
-        
-             
-    }
-    else{
-        alert("failed to signin");
-    }
-    }
-     )
-    }
 
- 
 
   componentDidMount() {
     document.documentElement.scrollTop = 0;
@@ -99,140 +102,142 @@ class Login extends React.Component {
   render() {
     return (
       <>
-        <DemoNavbar />
         <main ref="main">
-            <Container className="pt-lg-7">
-              <Row className="justify-content-center">
-                <Col>
-                    <img src={require("assets/img/theme/image1.png")}/>
-                </Col>
-                <Col lg="5">
-                  <Card className="bg-secondary shadow border-0">
-                    <CardHeader className="bg-white pb-5">
-                      <div className="text-muted text-center mb-3">
-                        <small>Sign in with</small>
-                      </div>
-                      <div className="btn-wrapper text-center">
-                        <Button
-                          className="btn-neutral btn-icon"
-                          color="default"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <span className="btn-inner--icon mr-1">
-                            <img
-                              alt="..."
-                              src={require("assets/img/icons/common/github.svg")}
-                            />
-                          </span>
-                          <span className="btn-inner--text">Github</span>
-                        </Button>
-                        <Button
-                          className="btn-neutral btn-icon ml-1"
-                          color="default"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <span className="btn-inner--icon mr-1">
-                            <img
-                              alt="..."
-                              src={require("assets/img/icons/common/google.svg")}
-                            />
-                          </span>
-                          <span className="btn-inner--text">Google</span>
-                        </Button>
-                      </div>
-                    </CardHeader>
-                    <CardBody className="px-lg-5 py-lg-5">
-                      <div className="text-center text-muted mb-4">
-                        <small>Or sign in with credentials</small>
-                      </div>
-                      <Form role="form">
-                        <FormGroup className="mb-3">
-                          <InputGroup className="input-group-alternative">
-                            <InputGroupAddon addonType="prepend">
-                              <InputGroupText>
-                                <i className="ni ni-email-83" />
-                              </InputGroupText>
-                            </InputGroupAddon>
-                        {/* I have added onChange method into email input */}
-                            <Input onChange = {this.onEmailChange} placeholder="Email" type="email" />
-
-                          </InputGroup>
-                        </FormGroup>
-                        <FormGroup>
-                          <InputGroup className="input-group-alternative">
-                            <InputGroupAddon addonType="prepend">
-                              <InputGroupText>
-                                <i className="ni ni-lock-circle-open" />
-                              </InputGroupText>
-                            </InputGroupAddon>
-
-                        {/* I have added  onPasswordChange method to the password input*/}
-                            <Input
-                            onChange = {this.onPasswordChange}
-                              placeholder="Password"
-                              type="password"
-                              autoComplete="off"
-                            />
-                            
-                          </InputGroup>
-                        </FormGroup>
-                        <div className="custom-control custom-control-alternative custom-checkbox">
-                          <input
-                            className="custom-control-input"
-                            id=" customCheckLogin"
-                            type="checkbox"
+          <Container className="pt-lg-7">
+            <Row className="justify-content-center">
+              <Col>
+                <img
+                  className="animate__animated animate__slideInLeft"
+                  src={require("assets/img/theme/image1.png")}
+                />
+              </Col>
+              <Col lg="5">
+                <Card className="bg-secondary shadow border-0">
+                  <CardHeader className="bg-white pb-5">
+                    <div className="text-muted text-center mb-3">
+                      <small>Sign in with</small>
+                    </div>
+                    <div className="btn-wrapper text-center">
+                      <Button
+                        className="btn-neutral btn-icon"
+                        color="default"
+                        href="#pablo"
+                        onClick={e => e.preventDefault()}
+                      >
+                        <span className="btn-inner--icon mr-1">
+                          <img
+                            alt="..."
+                            src={require("assets/img/icons/common/github.svg")}
                           />
-                          <label
-                            className="custom-control-label"
-                            htmlFor=" customCheckLogin"
-                          >
-                            <span>Remember me</span>
-                          </label>
-                        </div>
-                        <div className="text-center">
+                        </span>
+                        <span className="btn-inner--text">Github</span>
+                      </Button>
+                      <Button
+                        className="btn-neutral btn-icon ml-1"
+                        color="default"
+                        href="#pablo"
+                        onClick={e => e.preventDefault()}
+                      >
+                        <span className="btn-inner--icon mr-1">
+                          <img
+                            alt="..."
+                            src={require("assets/img/icons/common/google.svg")}
+                          />
+                        </span>
+                        <span className="btn-inner--text">Google</span>
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardBody className="px-lg-5 py-lg-5">
+                    <div className="text-center text-muted mb-4">
+                      <small>Or sign in with credentials</small>
+                    </div>
+                    <Form role="form">
+                      <FormGroup className="mb-3">
+                        <InputGroup className="input-group-alternative">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="ni ni-email-83" />
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          {/* I have added onChange method into email input */}
+                          <Input onChange={this.onEmailChange} placeholder="Email" type="email" />
+
+                        </InputGroup>
+                      </FormGroup>
+                      <FormGroup>
+                        <InputGroup className="input-group-alternative">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="ni ni-lock-circle-open" />
+                            </InputGroupText>
+                          </InputGroupAddon>
+
+                          {/* I have added  onPasswordChange method to the password input*/}
+                          <Input
+                            onChange={this.onPasswordChange}
+                            placeholder="Password"
+                            type="password"
+                            autoComplete="off"
+                          />
+
+                        </InputGroup>
+                      </FormGroup>
+                      <div className="custom-control custom-control-alternative custom-checkbox">
+                        <input
+                          className="custom-control-input"
+                          id=" customCheckLogin"
+                          type="checkbox"
+                        />
+                        <label
+                          className="custom-control-label"
+                          htmlFor=" customCheckLogin"
+                        >
+                          <span>Remember me</span>
+                        </label>
+                      </div>
+                      <div className="text-center">
 
                         {/* Added the onSubmit method into the button */}
-                          <Button
-                           onClick = {this.onSubmit}
-                            className="my-4"
-                            color="primary"
-                            type="button"
-                          >
-                            Sign in
+                        <Button
+                          onClick={this.onSubmit}
+                          className="my-4"
+                          color="primary"
+                          type="button"
+                        >
+                          Sign in
                           </Button>
 
 
-                        </div>
-                      </Form>
-                    </CardBody>
-                  </Card>
-                  <Row className="mt-3">
-                    <Col xs="6">
-                      <a
-                        className="text-light"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                      >
-                        <small>Forgot password?</small>
-                      </a>
-                    </Col>
-                    <Col className="text-right" xs="6">
-                      <a
-                        className="text-light"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                      >
-                        <small>Create new account</small>
-                      </a>
-                    </Col>
-                  </Row>
-                </Col>
-                
-              </Row>
-              
-            </Container>
+                      </div>
+                    </Form>
+                  </CardBody>
+                </Card>
+                <Row className="mt-3">
+                  <Col xs="6">
+                    <a
+                      className="text-light"
+                      href="#pablo"
+                      onClick={e => e.preventDefault()}
+                    >
+                      <small>Forgot password?</small>
+                    </a>
+                  </Col>
+                  <Col className="text-right" xs="6">
+                    <a
+                      className="text-light"
+                      href="#pablo"
+                      onClick={e => e.preventDefault()}
+                    >
+                      <small>Create new account</small>
+                    </a>
+                  </Col>
+                </Row>
+              </Col>
+
+            </Row>
+
+          </Container>
         </main>
         <SimpleFooter />
       </>
@@ -240,4 +245,17 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadUser: (userId, userName, email, idToken) => dispatch(loadUserAction(userId, userName, email, idToken))
+  }
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

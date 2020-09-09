@@ -1,9 +1,10 @@
-const createListAction =(listTitle, boardId) =>{
+const createListAction =(listTitle, boardId, listId) =>{
     return {
         type: "CREATE_LIST",
         payload:{
             listTitle,
-            boardId
+            boardId,
+            listId
         }
     }
 }

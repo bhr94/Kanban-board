@@ -63,7 +63,6 @@ class Landing extends React.Component {
   render() {
     return (
       <>
-      
         <DemoNavbar />
         <main ref="main">
           <div className="position-relative">
@@ -74,15 +73,16 @@ class Landing extends React.Component {
                   <Row>
                     <Col lg="6">
                       <h1 className="display-3 text-white animate__animated animate__slideInLeft">
-                        The best place to get professional advice from Experts{" "}
+                      Kanban helps teams work more collaboratively and get more done.{" "}
                         {/* <span>completed with examples</span> */}
                       </h1>
-                      <p className = "animate__animated animate__bounce"
+                      <h3 className = "animate__animated animate__bounce"
                       className="lead text-white animate__animated animate__slideInLeft">
-                        Connect to the experts from different professions to build a sound future
-                      </p>
+                        Kanban's boards, lists, and cards enable teams to organize and prioritize projects in a fun, 
+                        flexible, and rewarding way.
+                      </h3>
                       <div className="btn-wrapper">
-                        <Button
+                        {/* <Button
                           className="btn-icon mb-3 mb-sm-0"
                           color="info"
                           href="https://demos.creative-tim.com/argon-design-system-react/#/documentation/alerts?ref=adsr-landing-page"
@@ -90,8 +90,8 @@ class Landing extends React.Component {
                           <span className="btn-inner--icon mr-1">
                             <i className="fa fa-code" />
                           </span>
-                          <span className="btn-inner--text">Explore</span>
-                        </Button>
+                          <span className="btn-inner--text animate__animated animate__slideInDown">Explore</span>
+                        </Button> */}
                         <Button
                           className="btn-white btn-icon mb-3 mb-sm-0 ml-1"
                           color="default"
@@ -100,14 +100,14 @@ class Landing extends React.Component {
                           {/* <span className="btn-inner--icon mr-1">
                             <i className="ni ni-cloud-download-95" />
                           </span> */}
-                          <span className="btn-inner--text">
+                          <span className="btn-inner--text animate__animated animate__slideInUp">
                             Sign Up
                           </span>
                         </Button>
                       </div>
                     </Col>
                     <Col>
-                    <img className = "landingImage img-img" src={require("assets/img/theme/image3.png")}
+                    <img className = "landingImage img-img animate__animated animate__slideInRight" src={require("assets/img/theme/image3.png")}
                     style={{ width: "600px", height:"auto" }} />
                     </Col>
                   </Row>
@@ -166,7 +166,7 @@ class Landing extends React.Component {
                             </Badge>
                           </div>
                           <div>
-                            <h6 className="mb-0">
+                            <h6 className="mb-0 animate__animated animate__slideInLeft">
                               Carefully crafted components
                             </h6>
                           </div>
@@ -183,7 +183,7 @@ class Landing extends React.Component {
                             </Badge>
                           </div>
                           <div>
-                            <h6 className="mb-0">Amazing page examples</h6>
+                            <h6 className="mb-0 animate__animated animate__slideInLeft">Amazing page examples</h6>
                           </div>
                         </div>
                       </li>
@@ -198,7 +198,7 @@ class Landing extends React.Component {
                             </Badge>
                           </div>
                           <div>
-                            <h6 className="mb-0">
+                            <h6 className="mb-0 animate__animated animate__slideInLeft">
                               Super friendly support team
                             </h6>
                           </div>
@@ -216,7 +216,7 @@ class Landing extends React.Component {
             <Container>
               <Row className="row-grid align-items-center">
                 <Col md="6">
-                  <Card className="bg-default shadow border-0">
+                  <Card className="bg-default shadow border-0 animate__animated animate__slideInRight">
                     <CardImg
                       alt="..."
                       src={require("assets/img/theme/img-1-1200x1000.jpg")}

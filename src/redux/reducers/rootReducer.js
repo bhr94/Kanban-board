@@ -1,14 +1,19 @@
 
 const initialState ={
-    boards:[]
+    boards:[],
+    user:{
+        userId:0,
+        userName:"",
+        email:"",
+        idToken:""
+    }
 }
 
 const rootReducer = (state =initialState, action) =>{
-    console.log("action" + action)
     if(action.type === "CREATE_BOARD") {
         const board = {
-            boardId: state.boards.length,
-            boardTitle: action.boardTitle,
+            boardId: action.payload.boardId,
+            boardTitle: action.payload.boardTitle,
             lists:[]
                 
         }
@@ -25,12 +30,12 @@ const rootReducer = (state =initialState, action) =>{
         state.boards.filter(board =>{
             if(action.payload.boardId === board.boardId){
                 let list = {
-                    listId: state.boards[board.boardId].lists.length,
+                    listId: action.payload.listId,
                     listTitle: action.payload.listTitle,
                     cards:[]
                 }
                let newBoards = state.boards;
-               state.boards[board.boardId].lists.push(list)
+               newBoards[board.boardId].lists.push(list)
                return {
                    ...state,
                    boards:newBoards
@@ -45,7 +50,7 @@ const rootReducer = (state =initialState, action) =>{
                board.lists.map(list =>{
                     if(list.listId === action.payload.listId) {
                         let card = {
-                            cardId: list.length,
+                            cardId: action.payload.cardId,
                             cardContent:action.payload.cardContent
                         }
                         let newBoards = state.boards;
@@ -58,6 +63,36 @@ const rootReducer = (state =initialState, action) =>{
                 })
             }
        } )
+     }
+
+
+     if(action.type === "LOAD_USER"){
+         let newUser = state.user;
+         newUser ={
+            userId:action.payload.userId,
+            userName: action.payload.userName,
+            email:action.payload.email,
+            idToken: action.payload.idToken
+         }
+         return {
+             ...state,
+             user:newUser
+         }
+     }
+
+     if(action.type === "LOAD_BOARDS"){
+         let newBoards = state.boards;
+        action.data.map(board =>{
+            let newBoard = {
+                boardId:board.boardid,
+                boardTitle:board.boardname
+            }
+            newBoards.push(newBoard)
+        })
+         return {
+             ...state,
+             boards:newBoards
+         }
      }
         
     return state;

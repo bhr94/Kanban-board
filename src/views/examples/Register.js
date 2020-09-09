@@ -35,8 +35,9 @@ import {
 } from "reactstrap";
 
 // core components
-import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
+import {connect}  from "react-redux"
+import loadUserAction from "../../redux/actions/loadUserAction";
 
 class Register extends React.Component {
   constructor(){
@@ -59,6 +60,10 @@ class Register extends React.Component {
   this.setState({name: event.target.value})
 }
 
+handleLoadUser =(data) =>{
+  this.props.loadUser(data.user.id, data.user.username, data.user.email, data.token)
+}
+
  onSubmit = () =>{
    const bodyContent = JSON.stringify({
      name: this.state.name,
@@ -72,9 +77,9 @@ class Register extends React.Component {
      body: bodyContent
    })
    .then(response => response.json())
-   .then(user =>{
-    if(user.id){
-        //this.props.loadUser(user);
+   .then(data =>{
+    if(data){
+        this.handleLoadUser(data);
         history.push('/user-profile')
        
     }
@@ -82,6 +87,9 @@ class Register extends React.Component {
         alert("failed to register");
     }
     
+})
+.catch(err=>{
+  console.log("Failed to load the user "+ err)
 })
  }
 
@@ -93,7 +101,6 @@ class Register extends React.Component {
   render() {
     return (
       <>
-        <DemoNavbar />
         <main ref="main">
             <Container className="pt-lg-7">
               <Row className="justify-content-center">
@@ -240,7 +247,9 @@ class Register extends React.Component {
                   </Card>
                 </Col>
                 <Col>
-                    <img src={require("assets/img/theme/image2.png")}/>
+                    <img 
+                    className ="animate__animated animate__slideInRight"
+                    src={require("assets/img/theme/image2.png")}/>
                 </Col>
               </Row>
             </Container>
@@ -251,4 +260,17 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+const mapStateToProps =(state) =>{
+  return {
+      user:state.user
+  }
+}
+
+const mapDispatchToProps =(dispatch) =>{
+  return {
+    loadUser:( userId, userName, email, idToken) => dispatch(loadUserAction(userId, userName, email, idToken))
+  }
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

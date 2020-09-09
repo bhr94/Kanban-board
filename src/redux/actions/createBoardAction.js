@@ -1,8 +1,11 @@
 
-const createBoardAction =(boardTitle) =>{
+const createBoardAction =(boardTitle, boardId) =>{
     return {
         type: "CREATE_BOARD",
-        boardTitle: boardTitle
+        payload :{
+            boardTitle,
+            boardId
+        }
     }
 }
 
