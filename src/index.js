@@ -23,7 +23,7 @@ import {createStore, applyMiddleware} from "redux";
 import {Provider} from "react-redux"
 import rootReducer from "./redux/reducers/rootReducer"
 import {createLogger} from "redux-logger"
-import thunkMiddleware from "redux-thunk"
+import thunk from "redux-thunk"
 // require("history").createBrowserHistory
 
 import { Router, Route, Switch, Redirect } from "react-router-dom";
@@ -44,11 +44,10 @@ import Profile from "views/examples/Profile.js";
 import Register from "views/examples/Register.js";
 import UserProfile from "views/examples/UserProfile";
 import BoardPage from "views/examples/BoardPage"
-import HomePage from "views/examples/HomePage";
 // import AdminLayout from "dashboard_app/layouts/Admin.js"
 // import AuthLayout from "dashboard_app/layouts/Auth.js";
 const logger = createLogger();
-const store = createStore(rootReducer, applyMiddleware(logger));
+const store = createStore(rootReducer, applyMiddleware(thunk,logger));
 
 ReactDOM.render(
   <Provider store = {store}>
@@ -74,7 +73,7 @@ ReactDOM.render(
       />
       <Route
         // path="/board-page/:userName/:userId/:boardName"
-        path="/board-page/:boardTitle"
+        path="/board-page/:boardId"
         exact
         render={props => <BoardPage {...props} />}
       />

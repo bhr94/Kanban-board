@@ -40,6 +40,7 @@ import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
 import { connect } from "react-redux"
 import loadUserAction from "../../redux/actions/loadUserAction";
+import {provider, firebase} from "../../fbConfig"
 
 class Login extends React.Component {
   constructor() {
@@ -93,6 +94,19 @@ class Login extends React.Component {
   }
 
 
+  onSignIn =(googleUser) =>{
+    alert(JSON.stringify(googleUser))
+
+    var profile = googleUser.getBasicProfile();
+    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    console.log('Name: ' + profile.getName());
+    console.log('Image URL: ' + profile.getImageUrl());
+    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+  }
+
+
+  
+
 
   componentDidMount() {
     document.documentElement.scrollTop = 0;
@@ -144,7 +158,8 @@ class Login extends React.Component {
                             src={require("assets/img/icons/common/google.svg")}
                           />
                         </span>
-                        <span className="btn-inner--text">Google</span>
+                        <span className="btn-inner--text"
+                        onClick ={this.onSignIn}>Google</span>
                       </Button>
                     </div>
                   </CardHeader>

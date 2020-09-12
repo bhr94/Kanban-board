@@ -9,6 +9,10 @@ import createBoardAction from "../../redux/actions/createBoardAction"
 import "../../style.css"
 import { Redirect } from "react-router-dom"
 import loadBoardsAction from "../../redux/actions/loadBoardsAction"
+import Scroll from "./Scroll"
+import { Spinner } from 'reactstrap';
+
+
 
 import {
   Button,
@@ -39,33 +43,7 @@ class UserProfile extends React.Component {
   }
 
   componentDidMount() {
-    const bodyContent = JSON.stringify({
-      userId: this.props.user.useId
-    });
-    fetch('http://localhost:3001/loadBoards',
-      {
-        method: 'post',
-        headers: {
-          'Content-type': 'application/json',
-          "Authorization": this.props.user.idToken
-        },
-        body:bodyContent
-      })
-      .then(response =>{
-        return response.json()
-      })
-      .then(data =>{
-        if(data){
-          console.log("boards " + data)
-           this.props.loadBoards(data)
-        }
-        else {
-          alert("failed to load the boards")
-        }
-      })
-      .catch(error=>{
-        console.log("failed to load the boards" + error)
-      })
+      this.props.loadBoards(this.props.user.userId, this.props.user.idToken);
   }
 
   openModal = () => {
@@ -104,7 +82,7 @@ class UserProfile extends React.Component {
         .then(data => {
           if (data) {
             this.props.createBoard(data.boardname, data.boardid)
-            history.push(`/board-page/${data.boardname}`)
+            history.push(`/board-page/${data.boardid}`)
           }
           else {
             alert("failed to create a board")
@@ -120,15 +98,15 @@ class UserProfile extends React.Component {
 
 
 
-  goToBoard = (boardTitle) => {
-    history.push(`/board-page/${boardTitle}`)
+  goToBoard = (boardId) => {
+    history.push(`/board-page/${boardId}`)
   }
 
   render() {
     const { boards } = this.props
     if (this.props.user.userId) {
       return (
-        <div>
+        <>
           <nav className="dt w-100 border-box pa3 ph5-ns b--white-10">
             <a className="dtc v-mid mid-gray link dim w-25" href="#" title="Home">
               <img src="http://tachyons.io/img/logo.jpg" className="dib w2 h2 br-100" alt="Site Name" />
@@ -150,7 +128,7 @@ class UserProfile extends React.Component {
               <span />
             </div> */}
           <div>Welcome {this.props.user.userName} </div>
-          <section className="section section-lg section-shaped">
+          <section className="section section-lg">
 
             <Container className="py-lg-md d-flex" >
               <div className="col px-0">
@@ -187,19 +165,30 @@ class UserProfile extends React.Component {
               </div>
             </Container>
           </section>
-          <Col className="py-lg-md d-flex">
-            {boards.length > 0 ?
-              boards.map((board, i) => {
-                return (
-                  <Card className="text-center cardImg" key={i} onCLick={() => this.goToBoard(board.boardTitle)}>
-                    {board.boardTitle}
-                  </Card>
-                )
-              }) :
-              null
-            }
-          </Col>
-        </div>
+          
+          {this.props.isBoardsPending?
+          <div>
+            <h1>Loading</h1>
+            <Spinner color="warning" />
+          </div>
+          :
+          <Scroll>
+             <Row className ="cardContainer">
+               
+          {boards.length > 0 ?
+            boards.map((board, i) => {
+              return (
+                <Card className="text-center cardImg cards" key={i} onClick={() => this.goToBoard(board.boardId)}>
+                  {board.boardTitle}
+                </Card>
+              )
+            }) :
+            null
+          }
+        </Row>
+        </Scroll> 
+          }     
+        </>
 
       )
     }
@@ -214,14 +203,17 @@ class UserProfile extends React.Component {
 const mapStateToProps = (state) => {
   return {
     boards: state.boards,
-    user: state.user
+    user: state.user,
+    isBoardsPending: state.isBoardsPending,
+    boardsLoadError: state.boardsLoadError,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     createBoard: (boardTitle, boardId) => dispatch(createBoardAction(boardTitle, boardId)),
-    loadBoards: (data) => dispatch(loadBoardsAction(data))
+    loadBoards: (userId, idToken) => dispatch(loadBoardsAction(userId, idToken))
+    // loadCards:(listId, boardId, idToken) =>dispatch(loadCardsAction(listId,boardId, idToken))
   }
 }
 

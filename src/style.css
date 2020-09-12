@@ -87,7 +87,7 @@
 
 .scroll {
   overflow: scroll;
-  max-height: 400px;
+  height: auto;
 }
 
 .navFeature {
@@ -123,12 +123,27 @@
 }
 body{
   /* background: linear-gradient(135deg, #0079bf, #5067c5); */
-  background-color:#d8eefe;
+  /* background-color:#d8eefe; */
   height:100%;
 }
 
 .cardImg {
-  background: linear-gradient(135deg, #ff8906, #f25f4c);
+  background: white;
   width:200px;
   height:130px;
+  text-align: center
+}
+
+.cards {
+  display: flex;
+  width: 20%;
+  padding: 0 10px;
+}
+.cards:hover {
+  background:#53a7ea;
+  cursor: pointer;
+}
+
+.cardContainer {
+  background-color: #f1f1f1;
 }
