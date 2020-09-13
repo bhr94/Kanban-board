@@ -127,7 +127,7 @@ class UserProfile extends React.Component {
               <span />
               <span />
             </div> */}
-          <div>Welcome {this.props.user.userName} </div>
+          <div className = "boardTitle">Welcome {this.props.user.userName} </div>
           <section className="section section-lg">
 
             <Container className="py-lg-md d-flex" >
@@ -153,7 +153,6 @@ class UserProfile extends React.Component {
                       onChange={this.inputOnChange}
                     />
                     <p>Board body</p>
-
                     <Button variant="primary" onClick={this.closeModal}>
                       Close
                   </Button>
@@ -178,7 +177,7 @@ class UserProfile extends React.Component {
           {boards.length > 0 ?
             boards.map((board, i) => {
               return (
-                <Card className="text-center cardImg cards" key={i} onClick={() => this.goToBoard(board.boardId)}>
+                <Card className="text-center cardImg cards cardTitle" key={i} onClick={() => this.goToBoard(board.boardId)}>
                   {board.boardTitle}
                 </Card>
               )

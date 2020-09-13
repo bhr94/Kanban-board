@@ -116,20 +116,15 @@ const rootReducer = (state = initialState, action) => {
             let newBoards = state.boards;
             newBoards.map(board => {
                 if (board.boardId === action.payload.boardId) {
-                    action.payload.data.map(list => {
-                        // switch(action.type) {
-                        //     case 'LOAD_CARDS_PENDING':
-                        //         return Object.assign({}, state, { isCardsPending: true });
-                        //     case 'LOAD_CARDS_SUCCESS':
-
-                        // }
+                    console.log("action.payload.lists " + JSON.stringify(action.payload.lists))
+                    action.payload.lists.map(list => {
                         let newList = {
                             listId: list.listid,
                             listTitle: list.listtitle,
-                            cards: []
+                            cards: list.cards
                         }
-                        // console.log("board " + JSON.stringify(board))
                         board.lists.push(newList)
+
                     })
                 }
             })
@@ -139,33 +134,7 @@ const rootReducer = (state = initialState, action) => {
 
     }
 
-    switch (action.type) {
-        case 'LOAD_CARDS_PENDING':
-            return Object.assign({}, state, { isCardsPending: true });
-        case 'LOAD_CARDS_SUCCESS':
-            let newBoards = state.boards;
-            console.log("action payload" + action.payload)
-            console.log("boards " + state.boards)
-            newBoards.map(board => {
-                
-                if (board.boardId === action.payload.boardId) {
-                    
-                    board.lists.map(list => {
-                        if (list.listId === action.payload.listId) {
-                            let newCard = {
-                                cardId: action.payload.data.cardid,
-                                cardContent: action.payload.data.cardcontent
-                            }
-                            list.cards.push(newCard)
-                        }
-                    })
-                }
-            })
-            return Object.assign({}, state, { boards: newBoards, isCardsPending: false });
-        case 'LOAD_CARDS_FAILED':
-            return Object.assign({}, state, { cardsLoadError: action.payload.error })
-
-    }
+    
     return state;
 
 }

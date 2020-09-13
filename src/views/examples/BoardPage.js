@@ -4,7 +4,7 @@ import React from "react";
 import "tachyons"
 // import CreateListButton from "./CreateListButton"
 import Modal from "react-modal"
-import { Button, Spinner} from "reactstrap"
+import { Button, Spinner } from "reactstrap"
 import CardList from "./CardList"
 import Card from "./Card"
 import "../../style.css"
@@ -18,6 +18,7 @@ import loadListsAction from "../../redux/actions/loadListsAction"
 import { Row } from "reactstrap";
 import loadCardsAction from "../../redux/actions/loadCardsAction"
 
+
 class BoardPage extends React.Component {
 
     constructor(props) {
@@ -25,10 +26,19 @@ class BoardPage extends React.Component {
         this.state = {
             modalIsOpen: false,
             input: "",
-            cardTitle: ""
+            cardTitle: "",
+            cardModalIdOpen: false
         }
     }
 
+
+    openCardModal = () => {
+        this.setState({ cardModalIdOpen: true })
+    }
+
+    closeCardModal = () => {
+        this.setState({ cardModalIdOpen: false })
+    }
 
     openModal = () => {
         this.setState({ modalIsOpen: true })
@@ -80,14 +90,6 @@ class BoardPage extends React.Component {
 
     componentDidMount() {
         this.props.loadLists(this.props.board.boardId, this.props.user.idToken);
-
-
-        if (this.props.isListsPending) {
-            this.props.board.lists.map(list => {
-                this.props.loadCards(list.listId, this.props.board.boardId, this.props.user.idToken)
-            })
-        }
-        console.log("board lists " + this.props.board.lists)
     }
 
 
@@ -173,33 +175,33 @@ class BoardPage extends React.Component {
                     <div className="board-header">
 
                     </div>
-                    <div>{this.props.board.boardTitle} </div>
-                    <Button variant="primary" onClick={this.openModal}>
-                        + Add another list
-                    </Button>
-
-                    <Modal isOpen={this.state.modalIsOpen} onHide={this.closeModal} className="center mw5 mw6-ns hidden ba mv4 pa3 bt">
-                        <input
-                            id="name"
-                            className="input-reset ba b--black-20 pa2 mb2 db w-100"
-                            type="text" aria-describedby="name-desc"
-                            placeholder="Enter list title..."
-                            onChange={this.inputOnChange}
-                        />
-                        <Button variant="primary" onClick={this.addList}>
-                            Add list
-                        </Button>
-                        <Button variant="primary" onClick={this.closeModal}>
-                            X
-                      </Button>
-                    </Modal>
+                    <div className = "boardTitle">{this.props.board.boardTitle} </div>
                     <Row>
                         <Scroll>
-
+                            {this.state.modalIsOpen ?
+                                <div isOpen={this.state.modalIsOpen} onHide={this.closeModal} className="mw5 mw6-ns hidden ba mv4 pa3 bt">
+                                    <input
+                                        id="name"
+                                        className="input-reset ba b--black-20 pa2 mb2 db w-20"
+                                        type="text" aria-describedby="name-desc"
+                                        placeholder="Enter list title..."
+                                        onChange={this.inputOnChange}
+                                    />
+                                    <Button variant="primary" onClick={this.addList}>
+                                        Add list
+                                    </Button>
+                                    <Button variant="primary" onClick={this.closeModal}>
+                                        X
+                                    </Button>
+                                </div> :
+                                <Button variant="primary" onClick={this.openModal}>
+                                    + Add another list
+                                 </Button>
+                            }
                             {this.props.isListsPending ?
                                 <div>
                                     <h1>Loading...</h1>
-                                    <Spinner color="primary" />
+                                    <Spinner color="secondary" />
                                 </div> :
                                 this.props.board.lists.map((list, i) => {
                                     return <div className="list" >
@@ -210,7 +212,9 @@ class BoardPage extends React.Component {
                                             className="cardListName"
                                             dropCard={this.dropCard}
                                             dragOver1={this.dragOver1}
+                                            // openCardModal={this.openCardModal}
                                         >
+                                            
                                             <Scroll>
                                                 {
                                                     list.cards.map(card => {
@@ -223,23 +227,20 @@ class BoardPage extends React.Component {
                                                             onDragStart={this.dragStart}
                                                             onDragOver={this.dragOver2}
                                                         >
-                                                            {card.cardContent}
+                                                            {card.cardcontent}
                                                         </div>
                                                     })
                                                 }
                                             </Scroll>
                                         </CardList>
-                                        <div>
-                                            <div>
-                                                <input
-                                                    type="text"
-                                                    placeholder="enter card title..."
-                                                    onChange={this.cardTitleOnChange}
-                                                    className="mw-100 w-20 w5-ns f5 input-reset ba b--black-20 pv3 ph4 border-box"
-                                                />
-                                                <Button variant="primary" onClick={() => this.addCard(i)}>add card</Button>
-                                            </div>
-                                        </div>
+                                        <input
+                                            type="text"
+                                            placeholder="enter card title..."
+                                            onChange={this.cardTitleOnChange}
+                                            className="mw-100 w-20 w5-ns f5 input-reset ba b--black-20 pv3 ph4 border-box"
+                                        />
+                                        <Button variant="primary" onClick={() => this.addCard(i)}>add card</Button>
+                                        <Button variant="secondary" onClick={() => this.closeCardModal}>X</Button>
                                     </div>
                                 })
                             }
