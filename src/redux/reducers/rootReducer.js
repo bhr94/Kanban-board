@@ -133,7 +133,19 @@ const rootReducer = (state = initialState, action) => {
             return Object.assign({}, state, { listsLoadError: action.payload })
 
     }
-
+     
+        // if(action.type === 'REMOVE_BOARDS'){
+        //     if(state.user.userId === action.payload.userId){
+        //         const newBoards = state.boards;
+        //         newBoards.splice(0, newBoards.length)
+        //         console.log("newBoards " + newBoards)
+        //         return {
+        //             ...state,
+        //             boards: newBoards
+        //         }
+        //     }
+            
+        // }
     
     return state;
 

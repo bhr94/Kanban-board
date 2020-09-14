@@ -11,7 +11,7 @@ import { Redirect } from "react-router-dom"
 import loadBoardsAction from "../../redux/actions/loadBoardsAction"
 import Scroll from "./Scroll"
 import { Spinner } from 'reactstrap';
-
+import removeBoardsAction from "../../redux/actions/removeBoardsAction"
 
 
 import {
@@ -43,7 +43,10 @@ class UserProfile extends React.Component {
   }
 
   componentDidMount() {
+    if(this.props.boards.length <=0){
       this.props.loadBoards(this.props.user.userId, this.props.user.idToken);
+    }
+    
   }
 
   openModal = () => {
@@ -57,7 +60,6 @@ class UserProfile extends React.Component {
   inputOnChange = (event) => {
     this.setState({ inputValue: event.target.value })
   }
-
 
   handleClick = () => {
     this.setState({ modalIsOpen: false })
@@ -117,19 +119,8 @@ class UserProfile extends React.Component {
               <a className="link dim dark-gray f6 f5-ns dib" href="#" title="Contact">Join Us</a>
             </div>
           </nav>
-          {/* <div className="shape shape-style-1 bg-gradient-default">
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-            </div> */}
-          <div className = "boardTitle">Welcome {this.props.user.userName} </div>
+          <div className="boardTitle">Welcome {this.props.user.userName} </div>
           <section className="section section-lg">
-
             <Container className="py-lg-md d-flex" >
               <div className="col px-0">
                 <Row>
@@ -164,29 +155,29 @@ class UserProfile extends React.Component {
               </div>
             </Container>
           </section>
-          
-          {this.props.isBoardsPending?
-          <div>
-            <h1>Loading</h1>
-            <Spinner color="warning" />
-          </div>
-          :
-          <Scroll>
-             <Row className ="cardContainer">
-               
-          {boards.length > 0 ?
-            boards.map((board, i) => {
-              return (
-                <Card className="text-center cardImg cards cardTitle" key={i} onClick={() => this.goToBoard(board.boardId)}>
-                  {board.boardTitle}
-                </Card>
-              )
-            }) :
-            null
+
+          {this.props.isBoardsPending ?
+            <div>
+              <h1>Loading</h1>
+              <Spinner color="warning" />
+            </div>
+            :
+            <Scroll>
+              <Row className="cardContainer">
+
+                {boards.length > 0 ?
+                  boards.map((board, i) => {
+                    return (
+                      <Card className="text-center cardImg cards cardTitle" key={i} onClick={() => this.goToBoard(board.boardId)}>
+                        {board.boardTitle}
+                      </Card>
+                    )
+                  }) :
+                  null
+                }
+              </Row>
+            </Scroll>
           }
-        </Row>
-        </Scroll> 
-          }     
         </>
 
       )
@@ -212,7 +203,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     createBoard: (boardTitle, boardId) => dispatch(createBoardAction(boardTitle, boardId)),
     loadBoards: (userId, idToken) => dispatch(loadBoardsAction(userId, idToken))
-    // loadCards:(listId, boardId, idToken) =>dispatch(loadCardsAction(listId,boardId, idToken))
+    // removeBaords:(userId) =>dispatch(removeBoardsAction(userId))
   }
 }
 

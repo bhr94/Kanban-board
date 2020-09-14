@@ -1,13 +1,4 @@
 
-// const loadBoardsAction =(data) =>{
-//     return {
-//         type: "LOAD_BOARDS",
-//         data
-//     }
-// }
-
-// export default loadBoardsAction;
-
 const loadBoardsAction = ( userId, idToken) =>(dispatch) =>{
     const bodyContent = JSON.stringify({
         userId: userId

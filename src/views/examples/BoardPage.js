@@ -89,7 +89,10 @@ class BoardPage extends React.Component {
     }
 
     componentDidMount() {
-        this.props.loadLists(this.props.board.boardId, this.props.user.idToken);
+        if(this.props.board.lists.length <= 0){
+            this.props.loadLists(this.props.board.boardId, this.props.user.idToken);
+        }
+        
     }
 
 
@@ -175,7 +178,7 @@ class BoardPage extends React.Component {
                     <div className="board-header">
 
                     </div>
-                    <div className = "boardTitle">{this.props.board.boardTitle} </div>
+                    <div className="boardTitle">{this.props.board.boardTitle} </div>
                     <Row>
                         <Scroll>
                             {this.state.modalIsOpen ?
@@ -212,9 +215,9 @@ class BoardPage extends React.Component {
                                             className="cardListName"
                                             dropCard={this.dropCard}
                                             dragOver1={this.dragOver1}
-                                            // openCardModal={this.openCardModal}
+                                        // openCardModal={this.openCardModal}
                                         >
-                                            
+
                                             <Scroll>
                                                 {
                                                     list.cards.map(card => {
