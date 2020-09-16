@@ -16,8 +16,22 @@ import createCardAction from "../../redux/actions/createCardAction"
 import { Redirect } from "react-router-dom";
 import loadListsAction from "../../redux/actions/loadListsAction"
 import { Row } from "reactstrap";
-import loadCardsAction from "../../redux/actions/loadCardsAction"
+import loadCardsAction from "../../redux/actions/loadCardsAction";
+import UserData from './UserData';
+import loadCurrentBoardAction from "../../redux/actions/loadCurrentBoardAction"
+import loadCurrentBoardListAction from "../../redux/actions/loadCurrentBoardListAction"
 
+// constructor
+// render
+// componentdidMount
+//render
+
+
+
+//constructor
+//render
+//constructor
+//render
 
 class BoardPage extends React.Component {
 
@@ -27,8 +41,10 @@ class BoardPage extends React.Component {
             modalIsOpen: false,
             input: "",
             cardTitle: "",
-            cardModalIdOpen: false
+            cardModalIdOpen: false,
+            list: false
         }
+
     }
 
 
@@ -54,12 +70,10 @@ class BoardPage extends React.Component {
 
 
     addList = () => {
-        console.log("boardId: " + this.props.board.boardId)
-        console.log("listTitle: " + this.state.input)
         this.setState({ modalIsOpen: false })
         if (this.state.input.length > 0) {
             const bodyContent = JSON.stringify({
-                boardId: this.props.board.boardId,
+                boardId: UserData.getCurrentBoardId(),
                 listTitle: this.state.input
             })
             fetch('http://localhost:3001/createList',
@@ -67,7 +81,7 @@ class BoardPage extends React.Component {
                     method: 'post',
                     headers: {
                         'Content-Type': 'application/json',
-                        "Authorization": this.props.user.idToken
+                        "Authorization": UserData.getToken()
                     },
                     body: bodyContent
                 }
@@ -77,7 +91,34 @@ class BoardPage extends React.Component {
                 })
                 .then(data => {
                     if (data) {
-                        this.props.createList(data.listtitle, this.props.board.boardId, data.listid)
+                        if(this.props.boards.length >0){
+                            this.props.createList(data.listtitle, UserData.getCurrentBoardId, data.listid)
+                            let newList = {
+                                "listId":data.listid,
+                                "listTitle": data.listtitle,
+                                "cards":[]
+                            }
+                            let boardLists = UserData.getCurrentBoardLists();
+                            boardLists.push(newList)
+                            UserData.setCurrentBoardData(boardLists);
+                            console.log("turel3" + JSON.stringify(UserData.getCurrentBoardLists()))
+                            this.setState({list:true})
+                        }
+                        else {
+                            let newList = {
+                                "listId":data.listid,
+                                "listTitle": data.listtitle,
+                                "cards":[]
+                            }
+                            let boardLists = UserData.getCurrentBoardLists();
+                            boardLists.push(newList)
+                            UserData.setCurrentBoardData(boardLists);
+                            console.log("turel1" + JSON.stringify(UserData.getCurrentBoardLists()))
+                            console.log("data huhu " + JSON.stringify(data))
+                            this.setState({list:true})
+                        }
+                        
+                     
                     }
                 })
         }
@@ -89,11 +130,15 @@ class BoardPage extends React.Component {
     }
 
     componentDidMount() {
-        if(this.props.board.lists.length <= 0){
-            this.props.loadLists(this.props.board.boardId, this.props.user.idToken);
+        if (this.props.boards.length > 0 && this.props.board.lists.length === 0) {
+            this.props.loadLists(this.props.board.boardId, UserData.getToken());
+            this.setState({ list: true })
         }
-        
+        this.setState({ list: true })
+
     }
+
+
 
 
     cardTitleOnChange = (event) => {
@@ -113,7 +158,7 @@ class BoardPage extends React.Component {
                     method: "post",
                     headers: {
                         'Content-Type': 'application/json',
-                        "Authorization": this.props.user.idToken
+                        "Authorization": UserData.getToken()
                     },
                     body: bodyContent
 
@@ -123,7 +168,7 @@ class BoardPage extends React.Component {
                     return response.json()
                 })
                 .then(data => {
-                    this.props.createCard(data.cardcontent, data.listid, this.props.board.boardId, data.cardid)
+                    this.props.createCard(data.cardcontent, data.listid, UserData.getCurrentBoardId(), data.cardid)
                 })
             this.setState({ cardTitle: "" })
         }
@@ -161,10 +206,13 @@ class BoardPage extends React.Component {
     }
 
     render() {
-        console.log(this.props.board)
-        if (this.props.user.userId) {
+        if (this.props.boards.length > 0 && this.props.board.boardId) {
+            UserData.setCurrentBoardLists(this.props.board.lists);
+        }
+        let lists = UserData.getCurrentBoardLists();
+        if (UserData.getToken()) {
             return (
-                <div className="all">
+                <>
                     <nav className="dt w-100 border-box pa3 ph5-ns b--white-10">
                         <a className="dtc v-mid mid-gray link dim w-25" href="#" title="Home">
                             <img src="http://tachyons.io/img/logo.jpg" className="dib w2 h2 br-100" alt="Site Name" />
@@ -175,38 +223,40 @@ class BoardPage extends React.Component {
                             <a className="link dim dark-gray f6 f5-ns dib" href="#" title="Contact">Join Us</a>
                         </div>
                     </nav>
-                    <div className="board-header">
-
-                    </div>
-                    <div className="boardTitle">{this.props.board.boardTitle} </div>
-                    <Row>
-                        <Scroll>
-                            {this.state.modalIsOpen ?
-                                <div isOpen={this.state.modalIsOpen} onHide={this.closeModal} className="mw5 mw6-ns hidden ba mv4 pa3 bt">
-                                    <input
-                                        id="name"
-                                        className="input-reset ba b--black-20 pa2 mb2 db w-20"
-                                        type="text" aria-describedby="name-desc"
-                                        placeholder="Enter list title..."
-                                        onChange={this.inputOnChange}
-                                    />
-                                    <Button variant="primary" onClick={this.addList}>
-                                        Add list
+                    {/* <div className="board-header">
+                    </div>    */}
+                    <div className="boardTitle">{UserData.getCurrentBoardTitle()} </div>
+                    <section className="section section-lg">
+                        {this.state.modalIsOpen ?
+                            <div isOpen={this.state.modalIsOpen} onHide={this.closeModal} className="mw5 mw6-ns hidden ba mv4 pa3 bt">
+                                <input
+                                    id="name"
+                                    className="input-reset ba b--black-20 pa2 mb2 db w-20"
+                                    type="text" aria-describedby="name-desc"
+                                    placeholder="Enter list title..."
+                                    onChange={this.inputOnChange}
+                                />
+                                <Button variant="primary" onClick={this.addList}>
+                                    Add list
                                     </Button>
-                                    <Button variant="primary" onClick={this.closeModal}>
-                                        X
+                                <Button variant="primary" onClick={this.closeModal}>
+                                    X
                                     </Button>
-                                </div> :
-                                <Button variant="primary" onClick={this.openModal}>
-                                    + Add another list
+                            </div> :
+                            <Button variant="primary" onClick={this.openModal}>
+                                + Add another list
                                  </Button>
-                            }
-                            {this.props.isListsPending ?
+                            //  this.props.isListsPending?
+                        }
+                    </section>
+                    <Scroll className="cardContainer">
+                        <Row>
+                            {!this.state.list ?
                                 <div>
                                     <h1>Loading...</h1>
                                     <Spinner color="secondary" />
                                 </div> :
-                                this.props.board.lists.map((list, i) => {
+                                lists.map((list, i) => {
                                     return <div className="list" >
                                         <CardList
                                             title={list.listTitle}
@@ -217,7 +267,6 @@ class BoardPage extends React.Component {
                                             dragOver1={this.dragOver1}
                                         // openCardModal={this.openCardModal}
                                         >
-
                                             <Scroll>
                                                 {
                                                     list.cards.map(card => {
@@ -247,11 +296,9 @@ class BoardPage extends React.Component {
                                     </div>
                                 })
                             }
-                        </Scroll>
-
-                    </Row>
-
-                </div>
+                        </Row>
+                    </Scroll>
+                </>
             )
         }
         else {
@@ -266,14 +313,17 @@ class BoardPage extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     let boardId = parseInt(ownProps.match.params.boardId);
-    console.log("params boardId " + boardId)
 
     return {
         boards: state.boards,
         board: state.boards.find(board => board.boardId === boardId),
         user: state.user,
+        boardId: boardId,
         isListsPending: state.isListsPending,
-        listsLoadError: state.listsLoadError
+        listsLoadError: state.listsLoadError,
+        isBoardsPending: state.isBoardsPending,
+        currentBoard: state.currentBoard,
+        isCurrentBoardListPending: state.isCurrentBoardListPending
     }
 }
 
@@ -282,7 +332,9 @@ const mapDispatchToProps = (dispatch) => {
         createList: (listTitle, boardId, listId) => dispatch(createListAction(listTitle, boardId, listId)),
         createCard: (cardContent, listId, boardId, cardId) => dispatch(createCardAction(cardContent, listId, boardId, cardId)),
         loadLists: (boardId, idToken) => dispatch(loadListsAction(boardId, idToken)),
-        loadCards: (listId, boardId, idToken) => dispatch(loadCardsAction(listId, boardId, idToken))
+        loadCards: (listId, boardId, idToken) => dispatch(loadCardsAction(listId, boardId, idToken)),
+        loadCurrentBoard: (boardId, token) => dispatch(loadCurrentBoardAction(boardId, token)),
+        loadCurrentBoardList: (boardId, idToken) => dispatch(loadCurrentBoardListAction(boardId, idToken))
     }
 }
 

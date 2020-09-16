@@ -11,8 +11,9 @@ import { Redirect } from "react-router-dom"
 import loadBoardsAction from "../../redux/actions/loadBoardsAction"
 import Scroll from "./Scroll"
 import { Spinner } from 'reactstrap';
-import removeBoardsAction from "../../redux/actions/removeBoardsAction"
-
+import UserData from "./UserData";
+import loadCurrentBoardListAction from "../../redux/actions/loadCurrentBoardListAction"
+import loadListsAction from "../../redux/actions/loadListsAction"
 
 import {
   Button,
@@ -43,10 +44,10 @@ class UserProfile extends React.Component {
   }
 
   componentDidMount() {
-    if(this.props.boards.length <=0){
-      this.props.loadBoards(this.props.user.userId, this.props.user.idToken);
+    if (this.props.boards.length === 0) {
+      this.props.loadBoards(UserData.getId(), UserData.getToken());
     }
-    
+
   }
 
   openModal = () => {
@@ -65,7 +66,7 @@ class UserProfile extends React.Component {
     this.setState({ modalIsOpen: false })
     let bodyContent = JSON.stringify({
       boardTitle: this.state.inputValue,
-      userId: this.props.user.userId
+      userId: UserData.getId()
     })
 
     if (this.state.inputValue.length > 0) {
@@ -74,7 +75,7 @@ class UserProfile extends React.Component {
           method: 'post',
           headers: {
             'Content-Type': 'application/json',
-            "Authorization": this.props.user.idToken
+            "Authorization": UserData.getToken()
           },
           body: bodyContent
         })
@@ -83,8 +84,11 @@ class UserProfile extends React.Component {
         })
         .then(data => {
           if (data) {
+            console.log("data " + JSON.stringify(data))
             this.props.createBoard(data.boardname, data.boardid)
             history.push(`/board-page/${data.boardid}`)
+            UserData.setCurrentBoardData(data);
+            
           }
           else {
             alert("failed to create a board")
@@ -102,11 +106,25 @@ class UserProfile extends React.Component {
 
   goToBoard = (boardId) => {
     history.push(`/board-page/${boardId}`)
+    let boardTitle = '';
+    this.props.boards.map(board =>{
+        if(board.boardId === boardId) {
+          boardTitle = board.boardTitle
+        }
+    })
+    let data = {
+      "boardid": boardId,
+      "boardname": boardTitle
+    }
+
+    UserData.setCurrentBoardData(data);
+    // this.props.loadCurrentBoardList(boardId, UserData.getToken())
+    
   }
 
   render() {
     const { boards } = this.props
-    if (this.props.user.userId) {
+    if (UserData.getToken()) {
       return (
         <>
           <nav className="dt w-100 border-box pa3 ph5-ns b--white-10">
@@ -119,7 +137,7 @@ class UserProfile extends React.Component {
               <a className="link dim dark-gray f6 f5-ns dib" href="#" title="Contact">Join Us</a>
             </div>
           </nav>
-          <div className="boardTitle">Welcome {this.props.user.userName} </div>
+          <div className="boardTitle">Welcome {UserData.getName()} </div>
           <section className="section section-lg">
             <Container className="py-lg-md d-flex" >
               <div className="col px-0">
@@ -184,7 +202,7 @@ class UserProfile extends React.Component {
     }
     else {
       return (
-        <Redirect to="/landing-page" />
+        <Redirect to="/login-page" />
       )
     }
   }
@@ -202,8 +220,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     createBoard: (boardTitle, boardId) => dispatch(createBoardAction(boardTitle, boardId)),
-    loadBoards: (userId, idToken) => dispatch(loadBoardsAction(userId, idToken))
-    // removeBaords:(userId) =>dispatch(removeBoardsAction(userId))
+    loadBoards: (userId, idToken) => dispatch(loadBoardsAction(userId, idToken)),
+    loadCurrentBoardList:(boardId, idToken) =>dispatch(loadCurrentBoardListAction(boardId,idToken)),
+    loadLists: (boardId, idToken) => dispatch(loadListsAction(boardId, idToken)),
   }
 }
 

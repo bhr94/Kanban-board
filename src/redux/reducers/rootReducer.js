@@ -12,7 +12,12 @@ const initialState = {
     isListsPending: false,
     listsLoadError: '',
     isCardsPending: false,
-    cardsLoadError: ''
+    cardsLoadError: '',
+    isCurrentBoardPending:false,
+    currentBoardLoadError:'',
+    currentBoard:[],
+    isCurrentBoardListPending:false,
+    currentBoardListLoadError:''
 
 }
 
@@ -134,19 +139,37 @@ const rootReducer = (state = initialState, action) => {
 
     }
      
-        // if(action.type === 'REMOVE_BOARDS'){
-        //     if(state.user.userId === action.payload.userId){
-        //         const newBoards = state.boards;
-        //         newBoards.splice(0, newBoards.length)
-        //         console.log("newBoards " + newBoards)
-        //         return {
-        //             ...state,
-        //             boards: newBoards
-        //         }
-        //     }
-            
-        // }
-    
+
+       switch(action.type) {
+           case 'LOAD_CURRENT_BOARD_PENDING':
+               return Object.assign({}, state, {isCurrentBoardPending:true});
+           case 'LOAD_CURRENT_BOARD_SUCCESS':
+               let board = state.currentBoard;
+               board =[{
+                   boardId:action.payload.boardid,
+                   boardTitle:action.payload.boardname,
+                   lists:[]
+               }]
+               return Object.assign({}, state, { currentBoard: board, isCurrentBoardPending: false });
+            case 'LOAD_CURRENT_BOARD_FAILED':
+                return Object.assign({}, state, { currentBoardLoadError: action.payload })
+       }
+      
+       switch(action.type) {
+           case 'LOAD_CURRENT_BOARD_LIST_PENDING':
+               return Object.assign({}, state, {isCurrentBoardListPending:true});
+           case 'LOAD_CURRENT_BOARD_LIST_SUCCESS':
+            console.log("action.payload" + JSON.stringify(action.payload)) //lists /objects in an array
+             let board = state.currentBoard;
+               console.log("turel1 " + JSON.stringify(board))
+               board[0].lists = action.payload;
+               console.log("turel2 " + JSON.stringify(board))
+               return Object.assign({}, state, { currentBoard: board, isCurrentBoardListPending: false });
+           case 'LOAD_CURRENT_BOARD_LIST_FAILED':
+            return Object.assign({}, state, { currentBoardListLoadError: action.payload })
+       }
+
+
     return state;
 
 }

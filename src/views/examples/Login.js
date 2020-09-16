@@ -17,6 +17,7 @@
 */
 import React from "react";
 import history from '../../history'
+import UserData from './UserData'
 // import { BrowserRouter as Router } from 'react-router-dom'
 // reactstrap components
 import {
@@ -80,6 +81,7 @@ class Login extends React.Component {
       .then(response => response.json())
       .then(data => {
         if (data) {
+          UserData.setUserData(data)
           this.handleLoadUser(data);
           history.push('/user-profile');
         }
