@@ -105,7 +105,6 @@ class UserProfile extends React.Component {
 
 
   goToBoard = (boardId) => {
-    history.push(`/board-page/${boardId}`)
     let boardTitle = '';
     this.props.boards.map(board =>{
         if(board.boardId === boardId) {
@@ -118,6 +117,8 @@ class UserProfile extends React.Component {
     }
 
     UserData.setCurrentBoardData(data);
+    history.push(`/board-page/${boardId}`)
+
     // this.props.loadCurrentBoardList(boardId, UserData.getToken())
     
   }

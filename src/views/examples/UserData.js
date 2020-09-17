@@ -17,7 +17,6 @@ var UserData = (function () {
   }
  
   var setCurrentBoardLists = function(data) {
-    // localStorage.setItem("lists", JSON.stringify(data.lists));
     localStorage["lists"] = JSON.stringify(data);
   }
 
@@ -25,8 +24,10 @@ var UserData = (function () {
    return  JSON.parse(localStorage.getItem("lists"))
   }
 
-  
-
+  var updateCurrentBoardTitle = function(data) {
+    localStorage.setItem("boardTitle", data);
+  }
+ 
   
   var getCurrentBoardTitle =function() {
     return localStorage.getItem("boardTitle")
@@ -59,7 +60,8 @@ var UserData = (function () {
     getCurrentBoardTitle:getCurrentBoardTitle,
     getCurrentBoardId:getCurrentBoardId,
     setCurrentBoardLists:setCurrentBoardLists,
-    getCurrentBoardLists:getCurrentBoardLists
+    getCurrentBoardLists:getCurrentBoardLists,
+    updateCurrentBoardTitle:updateCurrentBoardTitle
   }
 
 })();

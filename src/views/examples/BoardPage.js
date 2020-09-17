@@ -20,6 +20,7 @@ import loadCardsAction from "../../redux/actions/loadCardsAction";
 import UserData from './UserData';
 import loadCurrentBoardAction from "../../redux/actions/loadCurrentBoardAction"
 import loadCurrentBoardListAction from "../../redux/actions/loadCurrentBoardListAction"
+import { Form, FormGroup, Label, Input } from 'reactstrap';
 
 // constructor
 // render
@@ -42,11 +43,80 @@ class BoardPage extends React.Component {
             input: "",
             cardTitle: "",
             cardModalIdOpen: false,
-            list: false
+            list: false,
+            isInEditMode: false,
+            value:'',
+            lists:[]
         }
 
     }
 
+    changeEditMode = () => {
+        this.setState({
+            isInEditMode: !this.state.isInEditMode
+        })
+    }
+
+    
+
+    updateComponentValue = () => {
+        this.setState({
+            isInEditMode: false,
+        })
+        UserData.updateCurrentBoardTitle(this.state.value)
+        const bodyContent = JSON.stringify({
+            boardId: UserData.getCurrentBoardId(),
+            newTitle: this.state.value
+        })
+
+        fetch('http://localhost:3001/updateBoardTitle',
+        {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": UserData.getToken()
+            },
+            body: bodyContent
+        })
+        .then(response => {
+            return response.json()
+        })
+        .then(data =>{
+            if(data){
+                UserData.updateCurrentBoardTitle(data.boardname)
+            }
+        })
+        .catch(error =>{
+            console.log(error)
+        })
+    }
+
+
+
+    renderEditView = () => {
+        return <div>
+            <input
+                type="text"
+                defaultValue={UserData.getCurrentBoardTitle()}
+                ref="theTextInput"
+                onChange ={this.newValue}
+            />
+            <button onClick={this.changeEditMode}>X</button>
+            <button onClick={this.updateComponentValue}>✔</button>
+        </div>
+    }
+
+
+    newValue =(e)=>{
+       this.setState({value: e.target.value})
+    }
+
+
+    renderDefaultView = () => {
+        return <div onClick={this.changeEditMode} className="boardTitle">
+            {UserData.getCurrentBoardTitle()}
+        </div>
+    }
 
     openCardModal = () => {
         this.setState({ cardModalIdOpen: true })
@@ -90,36 +160,25 @@ class BoardPage extends React.Component {
                     return response.json()
                 })
                 .then(data => {
-                    if (data) {
-                        if(this.props.boards.length >0){
-                            this.props.createList(data.listtitle, UserData.getCurrentBoardId, data.listid)
-                            let newList = {
-                                "listId":data.listid,
-                                "listTitle": data.listtitle,
-                                "cards":[]
-                            }
-                            let boardLists = UserData.getCurrentBoardLists();
-                            boardLists.push(newList)
-                            UserData.setCurrentBoardData(boardLists);
-                            console.log("turel3" + JSON.stringify(UserData.getCurrentBoardLists()))
-                            this.setState({list:true})
+                    if (data) { 
+                        // if (this.props.boards.length > 0) {
+                        //     alert("cimbre1")
+                        //     this.props.createList(data.listtitle, UserData.getCurrentBoardId(), data.listid)
+                        // }
+
+                        let newList = {
+                            "listId": data.listid,
+                            "listTitle": data.listtitle,
+                            "cards": []
                         }
-                        else {
-                            let newList = {
-                                "listId":data.listid,
-                                "listTitle": data.listtitle,
-                                "cards":[]
-                            }
-                            let boardLists = UserData.getCurrentBoardLists();
-                            boardLists.push(newList)
-                            UserData.setCurrentBoardData(boardLists);
-                            console.log("turel1" + JSON.stringify(UserData.getCurrentBoardLists()))
-                            console.log("data huhu " + JSON.stringify(data))
-                            this.setState({list:true})
-                        }
-                        
-                     
+                        let boardLists = UserData.getCurrentBoardLists();
+                        boardLists.push(newList)
+                        UserData.setCurrentBoardLists(boardLists);
+                        this.setState({ list: true })
                     }
+                })
+                .catch(error =>{
+                    console.log(error)
                 })
         }
         else {
@@ -137,9 +196,6 @@ class BoardPage extends React.Component {
         this.setState({ list: true })
 
     }
-
-
-
 
     cardTitleOnChange = (event) => {
         this.setState({ cardTitle: event.target.value })
@@ -205,6 +261,7 @@ class BoardPage extends React.Component {
         e.stopPropagation();
     }
 
+
     render() {
         if (this.props.boards.length > 0 && this.props.board.boardId) {
             UserData.setCurrentBoardLists(this.props.board.lists);
@@ -225,10 +282,14 @@ class BoardPage extends React.Component {
                     </nav>
                     {/* <div className="board-header">
                     </div>    */}
-                    <div className="boardTitle">{UserData.getCurrentBoardTitle()} </div>
+                    {this.state.isInEditMode ?
+                        this.renderEditView() :
+                        this.renderDefaultView()
+                    }
+                    {/* <div className="boardTitle" onClick ={this.updateBoardTitle}>{UserData.getCurrentBoardTitle()} </div> */}
                     <section className="section section-lg">
                         {this.state.modalIsOpen ?
-                            <div isOpen={this.state.modalIsOpen} onHide={this.closeModal} className="mw5 mw6-ns hidden ba mv4 pa3 bt">
+                            <div isOpen={this.state.modalIsOpen} className="mw5 mw6-ns hidden ba mv4 pa3 bt">
                                 <input
                                     id="name"
                                     className="input-reset ba b--black-20 pa2 mb2 db w-20"
