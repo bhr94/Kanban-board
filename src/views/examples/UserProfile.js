@@ -14,6 +14,7 @@ import { Spinner } from 'reactstrap';
 import UserData from "./UserData";
 import loadCurrentBoardListAction from "../../redux/actions/loadCurrentBoardListAction"
 import loadListsAction from "../../redux/actions/loadListsAction"
+import removeCurrentBoardDataAction from "../../redux/actions/removeCurrentBoardDataAction"
 
 import {
   Button,
@@ -84,10 +85,8 @@ class UserProfile extends React.Component {
         })
         .then(data => {
           if (data) {
-            console.log("data " + JSON.stringify(data))
             this.props.createBoard(data.boardname, data.boardid)
             history.push(`/board-page/${data.boardid}`)
-            UserData.setCurrentBoardData(data);
             
           }
           else {
@@ -215,6 +214,7 @@ const mapStateToProps = (state) => {
     user: state.user,
     isBoardsPending: state.isBoardsPending,
     boardsLoadError: state.boardsLoadError,
+    currentBoard:state.currentBoard
   }
 }
 
@@ -224,6 +224,7 @@ const mapDispatchToProps = (dispatch) => {
     loadBoards: (userId, idToken) => dispatch(loadBoardsAction(userId, idToken)),
     loadCurrentBoardList:(boardId, idToken) =>dispatch(loadCurrentBoardListAction(boardId,idToken)),
     loadLists: (boardId, idToken) => dispatch(loadListsAction(boardId, idToken)),
+    removeCurrentBoardData: () => dispatch(removeCurrentBoardDataAction())
   }
 }
 

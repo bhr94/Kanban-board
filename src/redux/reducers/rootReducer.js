@@ -15,8 +15,8 @@ const initialState = {
     cardsLoadError: '',
     isCurrentBoardPending:false,
     currentBoardLoadError:'',
-    currentBoard:[],
-    isCurrentBoardListPending:false,
+    currentBoard:{},
+    isCurrentBoardListPending:true,
     currentBoardListLoadError:''
 
 }
@@ -30,11 +30,11 @@ const rootReducer = (state = initialState, action) => {
 
         }
 
-        let newBoards = state.boards
-        newBoards.push(board)
+        // let newBoards = state.boards
+        // newBoards.push(board)
         return {
             ...state,
-            boards: newBoards
+            currentBoard: board
         }
     }
 
@@ -48,7 +48,6 @@ const rootReducer = (state = initialState, action) => {
                     listTitle: action.payload.listTitle,
                     cards: []
                 }
-
                 board.lists.push(list)
                 return {
                     ...state,
@@ -121,7 +120,6 @@ const rootReducer = (state = initialState, action) => {
             let newBoards = state.boards;
             newBoards.map(board => {
                 if (board.boardId === action.payload.boardId) {
-                    console.log("action.payload.lists " + JSON.stringify(action.payload.lists))
                     action.payload.lists.map(list => {
                         let newList = {
                             listId: list.listid,
@@ -159,16 +157,54 @@ const rootReducer = (state = initialState, action) => {
            case 'LOAD_CURRENT_BOARD_LIST_PENDING':
                return Object.assign({}, state, {isCurrentBoardListPending:true});
            case 'LOAD_CURRENT_BOARD_LIST_SUCCESS':
-            console.log("action.payload" + JSON.stringify(action.payload)) //lists /objects in an array
              let board = state.currentBoard;
-               console.log("turel1 " + JSON.stringify(board))
-               board[0].lists = action.payload;
-               console.log("turel2 " + JSON.stringify(board))
+               board.lists = action.payload;
                return Object.assign({}, state, { currentBoard: board, isCurrentBoardListPending: false });
            case 'LOAD_CURRENT_BOARD_LIST_FAILED':
             return Object.assign({}, state, { currentBoardListLoadError: action.payload })
        }
 
+   if(action.type === 'EMPTY_BOARDS') {
+       let emptyBoards = state.boards;
+       emptyBoards.splice(0, emptyBoards.length);
+       return {
+           ...state,
+           boards:emptyBoards
+       }
+   }
+
+     
+   if(action.type === 'ADD_CURRENT_BOARD_LIST'){
+        let board = state.currentBoard;
+        board.lists.push(action.payload);
+        board.lists[board.lists.length-1].cards =[]
+        return {
+            ...state,
+            currentBoard:board
+        }
+   }
+
+   if(action.type === 'REMOVE_CURRENT_BOARD_DATA') {
+       let board =state.currentBoard;
+       board.lists = [];
+       return {
+           ...state,
+           currentBoard:board
+       }
+   }
+
+   if(action.type === 'ADD_CURRENT_BOARD_CARD') {
+    let board = state.currentBoard;
+    board.lists.map(list =>{
+        if(action.payload.listId === list.listid) {
+            list.cards.push(action.payload.data)
+        }
+    })
+    return {
+        ...state,
+        currentBoard:board
+    }
+   }
 
     return state;
 
