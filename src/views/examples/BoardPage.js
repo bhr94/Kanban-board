@@ -221,7 +221,7 @@ class BoardPage extends React.Component {
                     this.props.addCurrentBoardCard(data, this.props.currentBoard.lists[i].listid)
                     this.setState({ cardTitle: "" })
                 })
-            
+
         }
         else {
             alert("enter card content")
@@ -257,7 +257,7 @@ class BoardPage extends React.Component {
     }
 
     changeListEditMode = () => {
-        this.setState({ listEditMode: true })
+        this.setState({ listEditMode: !this.state.listEditMode })
     }
 
     updateListTitle = () => {
@@ -348,9 +348,8 @@ class BoardPage extends React.Component {
                             //  this.props.isListsPending?
                         }
                     </section>
-                    <div className = "board-canvas">
-                    <Scroll id = "board" className="u-fancy-scrollbar js-no-higher-edits js-list-sortable ui-sortable">
-                        <Row>
+                    <div className="board-canvas board">
+                        <div className="js-no-higher-edits js-list-sortable ui-sortable u-fancy-scrollbar">
                             {this.props.isCurrentBoardListPending ?
                                 <div>
                                     <h1>Loading...</h1>
@@ -362,7 +361,7 @@ class BoardPage extends React.Component {
                                             <div>
                                                 <input
                                                     type="text"
-                                                    defaultValue={list.listTitle}
+                                                    defaultValue={list.listtitle}
                                                     ref="theTextInput"
                                                     onChange={this.onListTitleChange}
                                                 />
@@ -373,7 +372,6 @@ class BoardPage extends React.Component {
                                                 title={list.listtitle}
                                                 id={list.listid}
                                                 key={list.listid}
-                                                className="cardListName"
                                                 dropCard={this.dropCard}
                                                 dragOver1={this.dragOver1}
                                                 changeListEditMode={this.changeListEditMode}
@@ -381,12 +379,12 @@ class BoardPage extends React.Component {
                                             />
                                         }
 
-                                        <Scroll>
+                                        <div className="u-fancy-scrollbar list-cards u-clearfix">
                                             {
                                                 list.cards.map(card => {
                                                     return <div
                                                         draggable={true}
-                                                        className="f5 lh-copy measure-narrow card"
+                                                        className="f5 lh-copy measure-narrow card list-card"
                                                         id={card.cardId}
                                                         key={card.cardId}
                                                         onDragStart={this.dragStart}
@@ -394,24 +392,43 @@ class BoardPage extends React.Component {
                                                     >
                                                         {card.cardcontent}
                                                     </div>
+
                                                 })
                                             }
-                                        </Scroll>
-                                        <input
-                                            type="text"
-                                            placeholder="enter card title..."
-                                            onChange={this.cardTitleOnChange}
-                                            className="mw-100 w-20 w5-ns f5 input-reset ba b--black-20 pv3 ph4 border-box"
-                                        />
-                                        <Button variant="primary" onClick={() => this.addCard(i)}>add card</Button>
-                                        <Button variant="secondary" onClick={() => this.closeCardModal}>X</Button>
+                                        </div>
+
+                                        <div className="card-composer-container js-card-composer-container dark-background-hover">
+                                            <a className="open-card-composer js-open-card-composer" href="#">
+                                                <span className="icon-sm icon-add">
+                                                    + 
+                                                </span>
+                                                {/* <span className="js-add-a-card hide">Add a card</span> */}
+                                                <span className="js-add-another-card">  Add another card</span>
+                                            </a>
+                                            <div className="js-card-templates-button card-templates-button-container dark-background-hover">
+                                                <div className="js-react-root">
+                                                    <div><a className="_2arBFfwXVxA0AM" role="button" href="#">
+                                                        <span className="icon-sm icon-template-card dark-background-hover">
+                                                        </span></a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        {/* <input
+                                                type="text"
+                                                placeholder="enter card title..."
+                                                onChange={this.cardTitleOnChange}
+                                                className="mw-100 w-20 w5-ns f5 input-reset ba b--black-20 pv3 ph4 border-box"
+                                            />
+                                            <Button variant="primary" onClick={() => this.addCard(i)}>add card</Button>
+                                            <Button variant="secondary" onClick={() => this.closeCardModal}>X</Button> */}
                                     </div>
                                 })
                             }
-                        </Row>
-                    </Scroll>
+                        </div>
                     </div>
-                    
+
                 </>
             )
         }
@@ -450,7 +467,7 @@ const mapDispatchToProps = (dispatch) => {
         loadCurrentBoard: (boardId, token) => dispatch(loadCurrentBoardAction(boardId, token)),
         loadCurrentBoardList: (boardId, idToken) => dispatch(loadCurrentBoardListAction(boardId, idToken)),
         addCurrentBoardList: (list) => dispatch(addCurrentBoardlistAction(list)),
-        addCurrentBoardCard:(data, listId) => dispatch(addCurrentBoardCardAction(data, listId))
+        addCurrentBoardCard: (data, listId) => dispatch(addCurrentBoardCardAction(data, listId))
     }
 }
 
