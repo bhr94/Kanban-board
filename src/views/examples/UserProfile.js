@@ -127,14 +127,13 @@ class UserProfile extends React.Component {
     if (UserData.getToken()) {
       return (
         <>
-          <nav className="dt w-100 border-box pa3 ph5-ns b--white-10">
+          <nav className="dt w-100 border-box ph5-ns b--white-10">
             <a className="dtc v-mid mid-gray link dim w-25" href="#" title="Home">
               <img src="http://tachyons.io/img/logo.jpg" className="dib w2 h2 br-100" alt="Site Name" />
             </a>
             <div className="dtc v-mid w-75 tr">
-              <a className="link dim dark-gray f6 f5-ns dib mr3 mr4-ns" href="#" title="About">Boards</a>
-              <a className="link dim dark-gray f6 f5-ns dib mr3 mr4-ns" href="#" title="Store">Home</a>
-              <a className="link dim dark-gray f6 f5-ns dib" href="#" title="Contact">Join Us</a>
+              <a className="link dim white f6 f5-ns dib mr3 mr4-ns" href="#" title="About">Boards</a>
+              <a className="link dim white f6 f5-ns dib mr3 mr4-ns" href="#" title="Store">Home</a>
             </div>
           </nav>
           <div className="boardTitle">Welcome {UserData.getName()} </div>

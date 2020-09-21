@@ -42,13 +42,19 @@ class BoardPage extends React.Component {
             modalIsOpen: false,
             input: "",
             cardTitle: "",
-            cardModalIdOpen: false,
             list: false,
             isInEditMode: false,
             value: UserData.getCurrentBoardTitle(),
             lists: [],
-            listEditMode: false,
-            newListTitle: ''
+            listEdit: {
+                listId: null,
+                listEditMode: false
+            },
+            newListTitle: '',
+            addCardMode: {
+                listId: null,
+                isAddCardOpen: false
+            }
         }
 
     }
@@ -111,7 +117,6 @@ class BoardPage extends React.Component {
 
 
 
-
     newValue = (e) => {
         this.setState({ value: e.target.value })
     }
@@ -123,12 +128,18 @@ class BoardPage extends React.Component {
         </div>
     }
 
-    openCardModal = () => {
-        this.setState({ cardModalIdOpen: true })
-    }
+    // openCardModal = () => {
+    //     this.setState({ cardModalIdOpen: true })
+    // }
 
-    closeCardModal = () => {
-        this.setState({ cardModalIdOpen: false })
+    closeCardModal = (i) => {
+        this.setState(prevState => ({
+            addCardMode: {                   // object that we want to update
+                ...prevState.addCardMode,    // keep all other key-value pairs
+                listId: i,
+                isAddCardOpen: !prevState.addCardMode.isAddCardOpen                       // update the value of specific key
+            }
+        }))
     }
 
     openModal = () => {
@@ -222,6 +233,13 @@ class BoardPage extends React.Component {
                     this.setState({ cardTitle: "" })
                 })
 
+                this.setState(prevState => ({
+                    addCardMode: {                   // object that we want to update
+                        ...prevState.addCardMode,    // keep all other key-value pairs
+                        listId: i,
+                        isAddCardOpen: !prevState.addCardMode.isAddCardOpen                       // update the value of specific key
+                    }
+                }))
         }
         else {
             alert("enter card content")
@@ -256,21 +274,31 @@ class BoardPage extends React.Component {
         e.stopPropagation();
     }
 
-    changeListEditMode = () => {
-        this.setState({ listEditMode: !this.state.listEditMode })
+    changeListEditMode = (i) => {
+        this.setState(prevState => ({
+            listEdit: {                   // object that we want to update
+                ...prevState.listEdit,    // keep all other key-value pairs
+                listId: i,
+                listEditMode: !prevState.listEdit.listEditMode                       // update the value of specific key
+            }
+        }))
     }
 
-    updateListTitle = () => {
-        this.setState({
-            listEditMode: false,
-        })
-        UserData.updateCurrentBoardTitle(this.state.value)
+    updateListTitle = (listId) => {
+        this.setState(prevState => ({
+            listEdit: {                   // object that we want to update
+                ...prevState.listEdit,    // keep all other key-value pairs
+                listId: listId,
+                listEditMode: !prevState.listEdit.listEditMode                       // update the value of specific key
+            }
+        }))
+
         const bodyContent = JSON.stringify({
-            boardId: UserData.getCurrentBoardId(),
+            listId: listId,
             newTitle: this.state.value
         })
 
-        fetch('http://localhost:3001/updateBoardTitle',
+        fetch('http://localhost:3001/updateListTitle',
             {
                 method: 'post',
                 headers: {
@@ -298,6 +326,10 @@ class BoardPage extends React.Component {
     }
 
 
+    // openAddCardMode = () => {
+    //     this.setState({ isAddCardOpen: true })
+    // }
+
     render() {
         let lists = [];
 
@@ -308,46 +340,26 @@ class BoardPage extends React.Component {
         if (UserData.getToken()) {
             return (
                 <>
-                    <nav className="dt w-100 border-box pa3 ph5-ns b--white-10">
-                        <a className="dtc v-mid mid-gray link dim w-25" href="#" title="Home">
+                    <nav className="dt w-100 border-box">
+                        <a className="dtc v-mid link dim w-25" href="#" title="Home">
                             <img src="http://tachyons.io/img/logo.jpg" className="dib w2 h2 br-100" alt="Site Name" />
                         </a>
                         <div className="dtc v-mid w-75 tr">
-                            <a className="link dim dark-gray f6 f5-ns dib mr3 mr4-ns" href="#" title="About">Boards</a>
-                            <a className="link dim dark-gray f6 f5-ns dib mr3 mr4-ns" href="#" title="Store">Home</a>
-                            <a className="link dim dark-gray f6 f5-ns dib" href="#" title="Contact">Join Us</a>
+                            <a className="link dim white f6 f5-ns dib mr3 mr4-ns" href="#" title="About">Boards</a>
+                            <a className="link dim white f6 f5-ns dib mr3 mr4-ns" href="#" title="Store">Home</a>
                         </div>
                     </nav>
                     {/* <div className="board-header">
                     </div>    */}
-                    {this.state.isInEditMode ?
-                        this.renderEditView() :
-                        this.renderDefaultView()
-                    }
-                    {/* <div className="boardTitle" onClick ={this.updateBoardTitle}>{UserData.getCurrentBoardTitle()} </div> */}
-                    <section className="section section-lg">
-                        {this.state.modalIsOpen ?
-                            <div isOpen={this.state.modalIsOpen} className="mw5 mw6-ns hidden ba mv4 pa3 bt">
-                                <input
-                                    id="name"
-                                    className="input-reset ba b--black-20 pa2 mb2 db w-20"
-                                    type="text" aria-describedby="name-desc"
-                                    placeholder="Enter list title..."
-                                    onChange={this.inputOnChange}
-                                />
-                                <Button variant="secondary" onClick={this.addList}>
-                                    Add list
-                                    </Button>
-                                <Button variant="secondary" onClick={this.closeModal}>
-                                    X
-                                    </Button>
-                            </div> :
-                            <Button variant="primary" onClick={this.openModal}>
-                                + Add another list
-                                 </Button>
-                            //  this.props.isListsPending?
+                    <div className="board-header-btn mod-board-name inline-rename-board js-rename-board">
+                        {this.state.isInEditMode ?
+                            this.renderEditView() :
+                            this.renderDefaultView()
                         }
-                    </section>
+                    </div>
+
+
+                    {/* </section> */}
                     <div className="board-canvas board">
                         <div className="js-no-higher-edits js-list-sortable ui-sortable u-fancy-scrollbar">
                             {this.props.isCurrentBoardListPending ?
@@ -357,16 +369,17 @@ class BoardPage extends React.Component {
                                 </div> :
                                 lists.map((list, i) => {
                                     return <div className="list list-wrapper" >
-                                        {this.state.listEditMode ?
-                                            <div>
-                                                <input
+                                        {this.state.listEdit.listEditMode && this.state.listEdit.listId === list.listid ?
+                                            <div className="js-list-header u-clearfix is-menu-shown">
+                                                <textarea
                                                     type="text"
                                                     defaultValue={list.listtitle}
                                                     ref="theTextInput"
                                                     onChange={this.onListTitleChange}
+                                                    className="list-header-name mod-list-name js-list-name-input"
                                                 />
-                                                <button onClick={this.changeListEditMode}>X</button>
-                                                <button onClick={this.updateListTitle}>✔</button>
+                                                <button onClick={() => this.changeListEditMode(list.listid)}>X</button>
+                                                <button onClick={()=>this.updateListTitle(list.listid)}>✔</button>
                                             </div> :
                                             <CardList
                                                 title={list.listtitle}
@@ -374,7 +387,7 @@ class BoardPage extends React.Component {
                                                 key={list.listid}
                                                 dropCard={this.dropCard}
                                                 dragOver1={this.dragOver1}
-                                                changeListEditMode={this.changeListEditMode}
+                                                changeListEditMode={() => this.changeListEditMode(list.listid)}
                                             // openCardModal={this.openCardModal}
                                             />
                                         }
@@ -396,35 +409,67 @@ class BoardPage extends React.Component {
                                                 })
                                             }
                                         </div>
+                                        {
+                                            this.state.addCardMode.isAddCardOpen  && this.state.addCardMode.listId === i? /// burani duzwlt
+                                                <div>
+                                                    <textarea
+                                                        type="text"
+                                                        placeholder="enter card title..."
+                                                        onChange={this.cardTitleOnChange}
+                                                        className="list-card-composer-textarea js-card-title list-card"
+                                                    />
+                                                    <Button variant="primary" onClick={() => this.addCard(i)}>add card</Button>
+                                                    <Button variant="secondary" onClick={() => this.closeCardModal(i)}>X</Button>
+                                                </div> :
 
-                                        <div className="card-composer-container js-card-composer-container dark-background-hover">
-                                            <a className="open-card-composer js-open-card-composer" href="#">
-                                                <span className="icon-sm icon-add">
-                                                    + 
-                                                </span>
-                                                {/* <span className="js-add-a-card hide">Add a card</span> */}
-                                                <span className="js-add-another-card">  Add another card</span>
-                                            </a>
-                                            <div className="js-card-templates-button card-templates-button-container dark-background-hover">
-                                                <div className="js-react-root">
-                                                    <div><a className="_2arBFfwXVxA0AM" role="button" href="#">
-                                                        <span className="icon-sm icon-template-card dark-background-hover">
-                                                        </span></a></div>
+                                                <div className="card-composer-container js-card-composer-container dark-background-hover" onClick={()=>this.closeCardModal(i)}>
+                                                    <a className="open-card-composer js-open-card-composer" href="#">
+                                                        <span className="icon-sm icon-add">
+                                                            +
+                                                         </span>
+                                                        {/* <span className="js-add-a-card hide">Add a card</span> */}
+                                                        <span className="js-add-another-card">  Add another card</span>
+                                                    </a>
+                                                    <div className="js-card-templates-button card-templates-button-container dark-background-hover">
+                                                        <div className="js-react-root">
+                                                            <div><a className="_2arBFfwXVxA0AM" role="button" href="#">
+                                                                <span className="icon-sm icon-template-card dark-background-hover">
+                                                                </span></a></div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-
-
-                                        {/* <input
-                                                type="text"
-                                                placeholder="enter card title..."
-                                                onChange={this.cardTitleOnChange}
-                                                className="mw-100 w-20 w5-ns f5 input-reset ba b--black-20 pv3 ph4 border-box"
-                                            />
-                                            <Button variant="primary" onClick={() => this.addCard(i)}>add card</Button>
-                                            <Button variant="secondary" onClick={() => this.closeCardModal}>X</Button> */}
+                                        }
                                     </div>
                                 })
+
+                            }
+                            {this.state.modalIsOpen ?
+                                <div isOpen={this.state.modalIsOpen} className="js-add-list list-wrapper mod-add">
+                                    <form>
+                                        <a class="open-add-list js-open-add-list"
+                                            href="#" tabindex="-1">
+                                            <span class="placeholder">
+                                                <span class="icon-sm icon-add">
+                                                </span>Add another list</span>
+                                        </a>
+                                        <input className="list-name-input"
+                                            type="text" name="name"
+                                            placeholder="Enter list title..."
+                                            autocomplete="off" dir="auto"
+                                            maxlength="512"
+                                            onChange={this.inputOnChange} />
+                                        <div className="list-add-controls u-clearfix" />
+                                        <input className="primary mod-list-add-button js-save-edit"
+                                            type="submit" value="Add List" onClick={this.addList} />
+                                        <a className="icon-lg icon-close dark-hover js-cancel-edit" href="#" onClick={this.closeModal}>
+                                            X
+                                                    </a>
+                                    </form>
+                                </div> :
+                                <Button onClick={this.openModal}>
+                                    + Add another list
+                                 </Button>
+                                //  this.props.isListsPending?
                             }
                         </div>
                     </div>

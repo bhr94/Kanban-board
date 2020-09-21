@@ -256,7 +256,6 @@ class Login extends React.Component {
 
           </Container>
         </main>
-        <SimpleFooter />
       </>
     );
   }

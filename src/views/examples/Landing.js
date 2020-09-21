@@ -67,7 +67,7 @@ class Landing extends React.Component {
         <main ref="main">
           <div className="position-relative">
             {/* shape Hero */}  
-            <section className="section section-lg section-shaped pb-250">  
+            <section className="section1 section-lg pb-250">  
             <Container className="py-lg-md d-flex">
                 <div className="col px-0">
                   <Row>

@@ -254,7 +254,6 @@ handleLoadUser =(data) =>{
               </Row>
             </Container>
         </main>
-        <SimpleFooter />
       </>
     );
   }
