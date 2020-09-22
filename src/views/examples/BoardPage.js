@@ -21,18 +21,11 @@ import loadCurrentBoardAction from "../../redux/actions/loadCurrentBoardAction"
 import loadCurrentBoardListAction from "../../redux/actions/loadCurrentBoardListAction"
 import addCurrentBoardlistAction from "../../redux/actions/addCurrentBoardListAction"
 import addCurrentBoardCardAction from "../../redux/actions/addCurrentBoardCardAction"
-
-// constructor
-// render
-// componentdidMount
-//render
-
-
-
-//constructor
-//render
-//constructor
-//render
+import updateListTitleAction from "../../redux/actions/updateListTitleAction"
+import updateCardContentAction from "../../redux/actions/updateCardContentAction"
+import "pattern.css";
+import 'bootstrap/dist/css/bootstrap.css';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 class BoardPage extends React.Component {
 
@@ -53,8 +46,14 @@ class BoardPage extends React.Component {
             newListTitle: '',
             addCardMode: {
                 listId: null,
-                isAddCardOpen: false
-            }
+                isAddCardOpen: false,
+            },
+            editCardMode: {
+                cardId: null,
+                isEditCardOpen: false
+            },
+            newCardContent: '',
+            dropDownOpen:false
         }
 
     }
@@ -64,7 +63,6 @@ class BoardPage extends React.Component {
             isInEditMode: !this.state.isInEditMode
         })
     }
-
 
 
     updateComponentValue = () => {
@@ -128,16 +126,13 @@ class BoardPage extends React.Component {
         </div>
     }
 
-    // openCardModal = () => {
-    //     this.setState({ cardModalIdOpen: true })
-    // }
 
     closeCardModal = (i) => {
         this.setState(prevState => ({
             addCardMode: {                   // object that we want to update
                 ...prevState.addCardMode,    // keep all other key-value pairs
                 listId: i,
-                isAddCardOpen: !prevState.addCardMode.isAddCardOpen                       // update the value of specific key
+                isAddCardOpen: !prevState.addCardMode.isAddCardOpen
             }
         }))
     }
@@ -153,7 +148,6 @@ class BoardPage extends React.Component {
     inputOnChange = (event) => {
         this.setState({ input: event.target.value })
     }
-
 
     addList = () => {
         this.setState({ modalIsOpen: false })
@@ -197,7 +191,6 @@ class BoardPage extends React.Component {
 
     cardTitleOnChange = (event) => {
         this.setState({ cardTitle: event.target.value })
-
     }
 
     addCard = (i) => {
@@ -222,24 +215,17 @@ class BoardPage extends React.Component {
                     return response.json()
                 })
                 .then(data => {
-
-                    // {
-                    //     "cardid": 18,
-                    //     "listid": "1",
-                    //     "cardcontent": "huhuuuuu"
-                    // }
-                    // this.props.createCard(data.cardcontent, data.listid, UserData.getCurrentBoardId(), data.cardid)
                     this.props.addCurrentBoardCard(data, this.props.currentBoard.lists[i].listid)
                     this.setState({ cardTitle: "" })
                 })
 
-                this.setState(prevState => ({
-                    addCardMode: {                   // object that we want to update
-                        ...prevState.addCardMode,    // keep all other key-value pairs
-                        listId: i,
-                        isAddCardOpen: !prevState.addCardMode.isAddCardOpen                       // update the value of specific key
-                    }
-                }))
+            this.setState(prevState => ({
+                addCardMode: {
+                    ...prevState.addCardMode,
+                    listId: i,
+                    isAddCardOpen: !prevState.addCardMode.isAddCardOpen
+                }
+            }))
         }
         else {
             alert("enter card content")
@@ -253,7 +239,6 @@ class BoardPage extends React.Component {
         const cardId = e.dataTransfer.getData("cardId");
         const card = document.getElementById(cardId);
         e.target.appendChild(card);
-
     }
 
     dragOver1 = (e) => {
@@ -289,46 +274,103 @@ class BoardPage extends React.Component {
             listEdit: {                   // object that we want to update
                 ...prevState.listEdit,    // keep all other key-value pairs
                 listId: listId,
-                listEditMode: !prevState.listEdit.listEditMode                       // update the value of specific key
+                listEditMode: !prevState.listEdit.listEditMode,
             }
         }))
+        if (this.state.newListTitle.length > 0) {
+            const bodyContent = JSON.stringify({
+                listId: listId,
+                newTitle: this.state.newListTitle
+            })
 
-        const bodyContent = JSON.stringify({
-            listId: listId,
-            newTitle: this.state.value
-        })
+            fetch('http://localhost:3001/updateListTitle',
+                {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Authorization": UserData.getToken()
+                    },
+                    body: bodyContent
+                })
+                .then(response => {
+                    return response.json()
+                })
+                .then(data => {
+                    if (data) {
+                        this.props.updateListTitle(listId, data)
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
 
-        fetch('http://localhost:3001/updateListTitle',
-            {
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "Authorization": UserData.getToken()
-                },
-                body: bodyContent
-            })
-            .then(response => {
-                return response.json()
-            })
-            .then(data => {
-                if (data) {
-                    UserData.updateCurrentBoardTitle(data.boardname)
-                }
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        this.setState({ newListTitle: '' })
     }
-
 
     onListTitleChange = (e) => {
         this.setState({ newListTitle: e.target.value })
+
+    }
+
+    openCardEditMode = (cardId) => {
+        this.setState(prevState => ({
+            editCardMode: {
+                ...prevState.editCardMode,
+                cardId: cardId,
+                isEditCardOpen: !prevState.editCardMode.isEditCardOpen                       // update the value of specific key
+            }
+        }))
+    }
+
+    updateCard = (cardId) => {
+        this.setState(prevState => ({
+            editCardMode: {                   // object that we want to update
+                ...prevState.editCardMode,    // keep all other key-value pairs
+                cardId: cardId,
+                isEditCardOpen: !prevState.editCardMode.isEditCardOpen                       // update the value of specific key
+            }
+        }))
+        if (this.state.newCardContent.length > 0) {
+            const bodyContent = JSON.stringify({
+                cardId: cardId,
+                newCardContent: this.state.newCardContent
+            })
+
+            fetch('http://localhost:3001/updateCardContent',
+                {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Authorization": UserData.getToken()
+                    },
+                    body: bodyContent
+                })
+                .then(response => {
+                    return response.json()
+                })
+                .then(data => {
+                    if (data) {
+                        this.props.updateCardContent(cardId, data)
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
+
+
+        this.setState({ newCardContent: '' })
+    }
+
+    cardEditOnChange = (e) => {
+        this.setState({ newCardContent: e.target.value })
     }
 
 
-    // openAddCardMode = () => {
-    //     this.setState({ isAddCardOpen: true })
-    // }
+    openDropDown =()=>{
+        this.setState({dropDownOpen:!this.state.dropDownOpen})
+    }
 
     render() {
         let lists = [];
@@ -340,18 +382,16 @@ class BoardPage extends React.Component {
         if (UserData.getToken()) {
             return (
                 <>
-                    <nav className="dt w-100 border-box">
-                        <a className="dtc v-mid link dim w-25" href="#" title="Home">
-                            <img src="http://tachyons.io/img/logo.jpg" className="dib w2 h2 br-100" alt="Site Name" />
-                        </a>
-                        <div className="dtc v-mid w-75 tr">
-                            <a className="link dim white f6 f5-ns dib mr3 mr4-ns" href="#" title="About">Boards</a>
-                            <a className="link dim white f6 f5-ns dib mr3 mr4-ns" href="#" title="Store">Home</a>
-                        </div>
+                    <nav className="navbar navbar-light bg-light">
+                        <a className="navbar-brand">Navbar</a>
+                        <form className="form-inline">
+                            <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+                            <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        </form>
                     </nav>
                     {/* <div className="board-header">
                     </div>    */}
-                    <div className="board-header-btn mod-board-name inline-rename-board js-rename-board">
+                    <div className="board-header-btn mod-board-name">
                         {this.state.isInEditMode ?
                             this.renderEditView() :
                             this.renderDefaultView()
@@ -360,7 +400,7 @@ class BoardPage extends React.Component {
 
 
                     {/* </section> */}
-                    <div className="board-canvas board">
+                    <div className="board-canvas board pattern-dots-lg">
                         <div className="js-no-higher-edits js-list-sortable ui-sortable u-fancy-scrollbar">
                             {this.props.isCurrentBoardListPending ?
                                 <div>
@@ -371,46 +411,76 @@ class BoardPage extends React.Component {
                                     return <div className="list list-wrapper" >
                                         {this.state.listEdit.listEditMode && this.state.listEdit.listId === list.listid ?
                                             <div className="js-list-header u-clearfix is-menu-shown">
-                                                <textarea
+                                                <input
                                                     type="text"
                                                     defaultValue={list.listtitle}
                                                     ref="theTextInput"
                                                     onChange={this.onListTitleChange}
-                                                    className="list-header-name mod-list-name js-list-name-input"
+                                                    className="f5 f4-ns mv0 list-header"
                                                 />
                                                 <button onClick={() => this.changeListEditMode(list.listid)}>X</button>
-                                                <button onClick={()=>this.updateListTitle(list.listid)}>✔</button>
+                                                <button onClick={() => this.updateListTitle(list.listid)}>✔</button>
                                             </div> :
-                                            <CardList
-                                                title={list.listtitle}
-                                                id={list.listid}
-                                                key={list.listid}
-                                                dropCard={this.dropCard}
-                                                dragOver1={this.dragOver1}
-                                                changeListEditMode={() => this.changeListEditMode(list.listid)}
-                                            // openCardModal={this.openCardModal}
-                                            />
+                                            <div>
+                                                <CardList
+                                                    title={list.listtitle}
+                                                    id={list.listid}
+                                                    key={list.listid}
+                                                    dropCard={this.dropCard}
+                                                    dragOver1={this.dragOver1}
+                                                    changeListEditMode={() => this.changeListEditMode(list.listid)}
+                                                // openCardModal={this.openCardModal}
+                                                />
+                                                <span className="deleteButton" onClick ={this.openDropDown}>⋮</span>
+                                                {/* <ButtonDropdown isOpen={dropDownOpen} toggle={toggle} direction="right">
+                                                    <DropdownToggle caret>
+                                                        Button Dropdown
+                                                        </DropdownToggle>
+                                                    <DropdownMenu>
+                                                        <DropdownItem header>Header</DropdownItem>
+                                                        <DropdownItem disabled>Action</DropdownItem>
+                                                        <DropdownItem>Another Action</DropdownItem>
+                                                        <DropdownItem divider />
+                                                        <DropdownItem>Another Action</DropdownItem>
+                                                    </DropdownMenu>
+                                                </ButtonDropdown> */}
+                                            </div>
                                         }
 
                                         <div className="u-fancy-scrollbar list-cards u-clearfix">
                                             {
                                                 list.cards.map(card => {
-                                                    return <div
-                                                        draggable={true}
-                                                        className="f5 lh-copy measure-narrow card list-card"
-                                                        id={card.cardId}
-                                                        key={card.cardId}
-                                                        onDragStart={this.dragStart}
-                                                        onDragOver={this.dragOver2}
-                                                    >
-                                                        {card.cardcontent}
+                                                    return <div>
+                                                        {this.state.editCardMode.isEditCardOpen && this.state.editCardMode.cardId === card.cardid ?
+                                                            <div>
+                                                                <textarea
+                                                                    type="text"
+                                                                    defaultValue={card.cardcontent}
+                                                                    ref="theTextInput"
+                                                                    onChange={this.cardEditOnChange}
+                                                                    className="f5 lh-copy measure-narrow card list-card"
+                                                                />
+                                                                <button onClick={() => this.openCardEditMode(card.cardid)}>X</button>
+                                                                <button onClick={() => this.updateCard(card.cardid)}>✔</button>
+                                                            </div> :
+                                                            <div
+                                                                draggable={true}
+                                                                className="f5 lh-copy measure-narrow card list-card"
+                                                                id={card.cardId}
+                                                                key={card.cardId}
+                                                                onDragStart={this.dragStart}
+                                                                onDragOver={this.dragOver2}
+                                                                onClick={() => this.openCardEditMode(card.cardid)}
+                                                            >
+                                                                {card.cardcontent}
+                                                            </div>
+                                                        }
                                                     </div>
-
                                                 })
                                             }
                                         </div>
                                         {
-                                            this.state.addCardMode.isAddCardOpen  && this.state.addCardMode.listId === i? /// burani duzwlt
+                                            this.state.addCardMode.isAddCardOpen && this.state.addCardMode.listId === i ?
                                                 <div>
                                                     <textarea
                                                         type="text"
@@ -422,7 +492,7 @@ class BoardPage extends React.Component {
                                                     <Button variant="secondary" onClick={() => this.closeCardModal(i)}>X</Button>
                                                 </div> :
 
-                                                <div className="card-composer-container js-card-composer-container dark-background-hover" onClick={()=>this.closeCardModal(i)}>
+                                                <div className="card-composer-container js-card-composer-container dark-background-hover" onClick={() => this.closeCardModal(i)}>
                                                     <a className="open-card-composer js-open-card-composer" href="#">
                                                         <span className="icon-sm icon-add">
                                                             +
@@ -512,7 +582,9 @@ const mapDispatchToProps = (dispatch) => {
         loadCurrentBoard: (boardId, token) => dispatch(loadCurrentBoardAction(boardId, token)),
         loadCurrentBoardList: (boardId, idToken) => dispatch(loadCurrentBoardListAction(boardId, idToken)),
         addCurrentBoardList: (list) => dispatch(addCurrentBoardlistAction(list)),
-        addCurrentBoardCard: (data, listId) => dispatch(addCurrentBoardCardAction(data, listId))
+        addCurrentBoardCard: (data, listId) => dispatch(addCurrentBoardCardAction(data, listId)),
+        updateListTitle: (listId, data) => dispatch(updateListTitleAction(listId, data)),
+        updateCardContent: (cardId, data) => dispatch(updateCardContentAction(cardId, data))
     }
 }
 

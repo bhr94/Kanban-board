@@ -13,11 +13,11 @@ const initialState = {
     listsLoadError: '',
     isCardsPending: false,
     cardsLoadError: '',
-    isCurrentBoardPending:false,
-    currentBoardLoadError:'',
-    currentBoard:{},
-    isCurrentBoardListPending:true,
-    currentBoardListLoadError:''
+    isCurrentBoardPending: false,
+    currentBoardLoadError: '',
+    currentBoard: {},
+    isCurrentBoardListPending: true,
+    currentBoardListLoadError: ''
 
 }
 
@@ -136,79 +136,111 @@ const rootReducer = (state = initialState, action) => {
             return Object.assign({}, state, { listsLoadError: action.payload })
 
     }
-     
 
-       switch(action.type) {
-           case 'LOAD_CURRENT_BOARD_PENDING':
-               return Object.assign({}, state, {isCurrentBoardPending:true});
-           case 'LOAD_CURRENT_BOARD_SUCCESS':
-               let board = state.currentBoard;
-               board =[{
-                   boardId:action.payload.boardid,
-                   boardTitle:action.payload.boardname,
-                   lists:[]
-               }]
-               return Object.assign({}, state, { currentBoard: board, isCurrentBoardPending: false });
-            case 'LOAD_CURRENT_BOARD_FAILED':
-                return Object.assign({}, state, { currentBoardLoadError: action.payload })
-       }
-      
-       switch(action.type) {
-           case 'LOAD_CURRENT_BOARD_LIST_PENDING':
-               return Object.assign({}, state, {isCurrentBoardListPending:true});
-           case 'LOAD_CURRENT_BOARD_LIST_SUCCESS':
-             let board = state.currentBoard;
-               board.lists = action.payload;
-               return Object.assign({}, state, { currentBoard: board, isCurrentBoardListPending: false });
-           case 'LOAD_CURRENT_BOARD_LIST_FAILED':
+
+    switch (action.type) {
+        case 'LOAD_CURRENT_BOARD_PENDING':
+            return Object.assign({}, state, { isCurrentBoardPending: true });
+        case 'LOAD_CURRENT_BOARD_SUCCESS':
+            let board = state.currentBoard;
+            board = [{
+                boardId: action.payload.boardid,
+                boardTitle: action.payload.boardname,
+                lists: []
+            }]
+            return Object.assign({}, state, { currentBoard: board, isCurrentBoardPending: false });
+        case 'LOAD_CURRENT_BOARD_FAILED':
+            return Object.assign({}, state, { currentBoardLoadError: action.payload })
+    }
+
+    switch (action.type) {
+        case 'LOAD_CURRENT_BOARD_LIST_PENDING':
+            return Object.assign({}, state, { isCurrentBoardListPending: true });
+        case 'LOAD_CURRENT_BOARD_LIST_SUCCESS':
+            let board = state.currentBoard;
+            board.lists = action.payload;
+            return Object.assign({}, state, { currentBoard: board, isCurrentBoardListPending: false });
+        case 'LOAD_CURRENT_BOARD_LIST_FAILED':
             return Object.assign({}, state, { currentBoardListLoadError: action.payload })
-       }
+    }
 
-   if(action.type === 'EMPTY_BOARDS') {
-       let emptyBoards = state.boards;
-       emptyBoards.splice(0, emptyBoards.length);
-       return {
-           ...state,
-           boards:emptyBoards
-       }
-   }
-
-     
-   if(action.type === 'ADD_CURRENT_BOARD_LIST'){
-        let board = state.currentBoard;
-        board.lists.push(action.payload);
-        board.lists[board.lists.length-1].cards =[]
+    if (action.type === 'EMPTY_BOARDS') {
+        let emptyBoards = state.boards;
+        emptyBoards.splice(0, emptyBoards.length);
         return {
             ...state,
-            currentBoard:board
+            boards: emptyBoards
         }
-   }
-
-   if(action.type === 'REMOVE_CURRENT_BOARD_DATA') {
-       let board =state.currentBoard;
-       board.lists = [];
-       return {
-           ...state,
-           currentBoard:board
-       }
-   }
-
-   if(action.type === 'ADD_CURRENT_BOARD_CARD') {
-    let board = state.currentBoard;
-    board.lists.map(list =>{
-        if(action.payload.listId === list.listid) {
-            list.cards.push(action.payload.data)
-        }
-    })
-    return {
-        ...state,
-        currentBoard:board
     }
-   }
 
+
+    if (action.type === 'ADD_CURRENT_BOARD_LIST') {
+        let board = state.currentBoard;
+        board.lists.push(action.payload);
+        board.lists[board.lists.length - 1].cards = []
+        return {
+            ...state,
+            currentBoard: board
+        }
+    }
+
+    if (action.type === 'REMOVE_CURRENT_BOARD_DATA') {
+        let board = state.currentBoard;
+        board.lists = [];
+        return {
+            ...state,
+            currentBoard: board
+        }
+    }
+
+    if (action.type === 'ADD_CURRENT_BOARD_CARD') {
+        let board = state.currentBoard;
+        board.lists.map(list => {
+            if (action.payload.listId === list.listid) {
+                list.cards.push(action.payload.data)
+            }
+        })
+        return {
+            ...state,
+            currentBoard: board
+        }
+    }
+
+    if (action.type === 'UPDATE_LIST_TITLE') {
+        let board = state.currentBoard;
+        board.lists.map(list => {
+            if (action.payload.listId === list.listid) {
+                list.listtitle = action.payload.data.listtitle;
+            }
+        })
+        return {
+            ...state,
+            currentBoard: board
+        }
+    }
+
+    if (action.type === 'UPDATE_CARD_CONTENT') {
+        let board = state.currentBoard;
+        board.lists.map(list => {
+            console.log("action.payload.data.listid " + action.payload.data.listid)
+            if (action.payload.data.listid === list.listid) {  
+                   
+                console.log("action.payload.data " + JSON.stringify(action.payload.data))
+                list.cards.map(card => {
+                    if (card.cardid === action.payload.cardId) {
+                        card.cardcontent = action.payload.data.cardcontent
+                    }
+                })
+            }
+            return {
+                ...state,
+                currentBoard: board
+            }
+        })
+    }
     return state;
-
 }
+
 
 export default rootReducer;
 
