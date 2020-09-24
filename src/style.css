@@ -187,9 +187,13 @@ body{
     right: 0;
     bottom: 0;
     left: 0;
-    background-color:#0f0e17;
+    background-color:#f8f5f2;
+    min-height: 100vh;
+    
     
 }
+
+
 
 .u-fancy-scrollbar::-webkit-scrollbar {
   height: 8px;
@@ -239,11 +243,11 @@ body, button, html, input, select, textarea {
 .list-wrapper {
   width: 270px;
   margin: 4px 4px;
-  height: 100%;
   box-sizing: border-box;
   display: inline-block;
   vertical-align: top;
   /* white-space: nowrap; */
+
 }
 
 
@@ -475,6 +479,7 @@ pre:after {
   -webkit-overflow-scrolling: initial;
 }
 
+
 .calendar-week.u-fancy-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -489,6 +494,8 @@ pre:after {
   z-index: 1;
   min-height: 0;
   margin-top:1rem;
+  max-height:44rem
+
 }
 
 .list-card {
@@ -503,6 +510,10 @@ pre:after {
   position: relative;
   text-decoration: none;
   z-index: 0;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  text-align: left;
+  margin: 10px;
 }
 
 

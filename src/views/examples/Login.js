@@ -253,8 +253,9 @@ class Login extends React.Component {
               </Col>
 
             </Row>
-
+  
           </Container>
+          <SimpleFooter/>
         </main>
       </>
     );

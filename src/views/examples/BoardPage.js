@@ -53,7 +53,7 @@ class BoardPage extends React.Component {
                 isEditCardOpen: false
             },
             newCardContent: '',
-            dropDownOpen:false
+            dropDownOpen: false
         }
 
     }
@@ -352,6 +352,7 @@ class BoardPage extends React.Component {
                 .then(data => {
                     if (data) {
                         this.props.updateCardContent(cardId, data)
+                        this.setState({ newCardContent: '' })
                     }
                 })
                 .catch(error => {
@@ -360,7 +361,8 @@ class BoardPage extends React.Component {
         }
 
 
-        this.setState({ newCardContent: '' })
+
+
     }
 
     cardEditOnChange = (e) => {
@@ -368,8 +370,8 @@ class BoardPage extends React.Component {
     }
 
 
-    openDropDown =()=>{
-        this.setState({dropDownOpen:!this.state.dropDownOpen})
+    openDropDown = () => {
+        this.setState({ dropDownOpen: !this.state.dropDownOpen })
     }
 
     render() {
@@ -382,12 +384,14 @@ class BoardPage extends React.Component {
         if (UserData.getToken()) {
             return (
                 <>
-                    <nav className="navbar navbar-light bg-light">
-                        <a className="navbar-brand">Navbar</a>
-                        <form className="form-inline">
-                            <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-                            <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                        </form>
+                    <nav className="dt w-100 border-box ph5-ns b--white-10">
+                        <a className="dtc v-mid mid-gray link dim w-25" href="#" title="Home">
+                            <img src="http://tachyons.io/img/logo.jpg" className="dib w2 h2 br-100" alt="Site Name" />
+                        </a>
+                        <div className="dtc v-mid w-75 tr">
+                            <a className="link dim white f6 f5-ns dib mr3 mr4-ns" href="#" title="About">Boards</a>
+                            <a className="link dim white f6 f5-ns dib mr3 mr4-ns" href="#" title="Store">Home</a>
+                        </div>
                     </nav>
                     {/* <div className="board-header">
                     </div>    */}
@@ -431,7 +435,7 @@ class BoardPage extends React.Component {
                                                     changeListEditMode={() => this.changeListEditMode(list.listid)}
                                                 // openCardModal={this.openCardModal}
                                                 />
-                                                <span className="deleteButton" onClick ={this.openDropDown}>⋮</span>
+                                                <span className="deleteButton" onClick={this.openDropDown}>⋮</span>
                                                 {/* <ButtonDropdown isOpen={dropDownOpen} toggle={toggle} direction="right">
                                                     <DropdownToggle caret>
                                                         Button Dropdown
@@ -458,14 +462,14 @@ class BoardPage extends React.Component {
                                                                     defaultValue={card.cardcontent}
                                                                     ref="theTextInput"
                                                                     onChange={this.cardEditOnChange}
-                                                                    className="f5 lh-copy measure-narrow card list-card"
+                                                                    className="f5 lh-copy measure-narrow list-card"
                                                                 />
                                                                 <button onClick={() => this.openCardEditMode(card.cardid)}>X</button>
                                                                 <button onClick={() => this.updateCard(card.cardid)}>✔</button>
                                                             </div> :
                                                             <div
                                                                 draggable={true}
-                                                                className="f5 lh-copy measure-narrow card list-card"
+                                                                className="f5 lh-copy measure-narrow list-card"
                                                                 id={card.cardId}
                                                                 key={card.cardId}
                                                                 onDragStart={this.dragStart}
