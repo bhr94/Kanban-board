@@ -60,11 +60,11 @@ ReactDOM.render(
         render={props => <Landing {...props} />}
       />
       <Route path="/login-page" exact render={props => <Login {...props} />} />
-      <Route
+      {/* <Route
         path="/profile-page"
         exact
         render={props => <Profile {...props} />}
-      />
+      /> */}
       <Route path="/user-profile" exact render={props => <UserProfile {...props} />} />
       <Route
         path="/register-page"

@@ -15,6 +15,7 @@ import UserData from "./UserData";
 import loadCurrentBoardListAction from "../../redux/actions/loadCurrentBoardListAction"
 import loadListsAction from "../../redux/actions/loadListsAction"
 import removeCurrentBoardDataAction from "../../redux/actions/removeCurrentBoardDataAction"
+import addNewBoardAction from "../../redux/actions/addNewBoardAction"
 
 import {
   Button,
@@ -46,9 +47,15 @@ class UserProfile extends React.Component {
 
   componentDidMount() {
     if (this.props.boards.length === 0) {
-      this.props.loadBoards(UserData.getId(), UserData.getToken());
+       this.props.loadBoards(UserData.getId(), UserData.getToken());
     }
 
+    // if(this.props.boards.length < boards.length){
+    //   this.props.addNewBoard(this.props.loadBoards(UserData.getId(), UserData.getToken())[this.props.loadBoards(UserData.getId(), UserData.getToken()).length-1])
+    // }
+
+
+    // this.props.loadBoards(UserData.getId(), UserData.getToken());
   }
 
   openModal = () => {
@@ -86,6 +93,7 @@ class UserProfile extends React.Component {
         .then(data => {
           if (data) {
             this.props.createBoard(data.boardname, data.boardid)
+            UserData.setCurrentBoardData(data);
             history.push(`/board-page/${data.boardid}`)
             
           }
@@ -132,15 +140,14 @@ class UserProfile extends React.Component {
               <img src="http://tachyons.io/img/logo.jpg" className="dib w2 h2 br-100" alt="Site Name" />
             </a>
             <div className="dtc v-mid w-75 tr">
-              <a className="link dim white f6 f5-ns dib mr3 mr4-ns" href="#" title="About">Boards</a>
-              <a className="link dim white f6 f5-ns dib mr3 mr4-ns" href="#" title="Store">Home</a>
+              {/* <a className="link dim white f6 f5-ns dib mr3 mr4-ns" href="#" title="boar">Boards</a> */}
+              <a className="link dim white f6 f5-ns dib mr3 mr4-ns" href='/landing-page' title="Home">Home</a>
             </div>
           </nav>
           <div className="boardTitle">Welcome {UserData.getName()} </div>
           <section className="section section-lg">
             <Container className="py-lg-md d-flex" >
               <div className="col px-0">
-                <Row>
                   <main ref="main">
                     <div className="position-relative">
                       {/* shape Hero */}
@@ -162,13 +169,12 @@ class UserProfile extends React.Component {
                     />
                     <p>Board body</p>
                     <Button variant="primary" onClick={this.closeModal}>
-                      Close
+                      X
                   </Button>
                     <Button variant="primary" onClick={this.handleClick}>
-                      Create a board
+                      ADD
                 </Button>
                   </Modal>
-                </Row>
               </div>
             </Container>
           </section>
@@ -179,13 +185,12 @@ class UserProfile extends React.Component {
               <Spinner color="warning" />
             </div>
             :
-            <Scroll>
               <Row className="cardContainer">
 
                 {boards.length > 0 ?
                   boards.map((board, i) => {
                     return (
-                      <Card className="text-center cardImg cards cardTitle" key={i} onClick={() => this.goToBoard(board.boardId)}>
+                      <Card className="text-center  cards cardTitle" key={i} onClick={() => this.goToBoard(board.boardId)}>
                         {board.boardTitle}
                       </Card>
                     )
@@ -193,7 +198,6 @@ class UserProfile extends React.Component {
                   null
                 }
               </Row>
-            </Scroll>
           }
         </>
 
@@ -223,7 +227,8 @@ const mapDispatchToProps = (dispatch) => {
     loadBoards: (userId, idToken) => dispatch(loadBoardsAction(userId, idToken)),
     loadCurrentBoardList:(boardId, idToken) =>dispatch(loadCurrentBoardListAction(boardId,idToken)),
     loadLists: (boardId, idToken) => dispatch(loadListsAction(boardId, idToken)),
-    removeCurrentBoardData: () => dispatch(removeCurrentBoardDataAction())
+    removeCurrentBoardData: () => dispatch(removeCurrentBoardDataAction()),
+    addNewBoard:(board) => dispatch(addNewBoardAction(board))
   }
 }
 

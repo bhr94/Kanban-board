@@ -1,3 +1,5 @@
+import { data } from "jquery";
+import { isConditionalExpression } from "typescript";
 
 const initialState = {
     boards: [],
@@ -222,10 +224,7 @@ const rootReducer = (state = initialState, action) => {
     if (action.type === 'UPDATE_CARD_CONTENT') {
         let board = state.currentBoard;
         board.lists.map(list => {
-            console.log("action.payload.data.listid " + action.payload.data.listid)
-            if (action.payload.data.listid === list.listid) {  
-                   
-                console.log("action.payload.data " + JSON.stringify(action.payload.data))
+            if (action.payload.data.listid === list.listid) {
                 list.cards.map(card => {
                     if (card.cardid === action.payload.cardId) {
                         card.cardcontent = action.payload.data.cardcontent
@@ -237,6 +236,48 @@ const rootReducer = (state = initialState, action) => {
                 currentBoard: board
             }
         })
+    }
+
+    if (action.type === 'UPDATE_LIST') {
+        let board = state.currentBoard;
+        board.lists.map(list=> {
+            if (list.listid === action.payload.listid) {
+                list.cards.push(action.payload)
+            }
+
+       })
+       return {
+        ...state,
+        currentBoard: board
+    }
+    }
+
+    if(action.type === 'DELETE_CARD_FROM_LIST') {
+        let board = state.currentBoard;
+        board.lists.map(list=> {
+            if (list.listid === action.payload.sourceListId) {
+                list.cards.map((card,i)=>{
+                    if(card.cardid === action.payload.data.cardid) {
+                       list.cards.splice(i, 1)
+                    }
+                })
+              }
+              console.log('deleted list ' + JSON.stringify(list))
+        })
+
+        return {
+            ...state,
+            currentBoard: board
+        }
+    }
+
+    if(action.type === 'ADD_NEW_BOARD'){
+        let boards = state.boards
+        boards.push(action.payload)
+        return {
+            ...state,
+            boards:boards
+        }
     }
     return state;
 }

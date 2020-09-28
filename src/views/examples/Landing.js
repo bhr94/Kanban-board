@@ -100,7 +100,7 @@ class Landing extends React.Component {
                           {/* <span className="btn-inner--icon mr-1">
                             <i className="ni ni-cloud-download-95" />
                           </span> */}
-                          <span className="btn-inner--text animate__animated animate__slideInUp">
+                          <span className=" animate__animated animate__slideInUp">
                             Sign Up
                           </span>
                         </Button>
@@ -148,11 +148,11 @@ class Landing extends React.Component {
                     <div className="icon icon-lg icon-shape icon-shape-success shadow rounded-circle mb-5">
                       <i className="ni ni-settings-gear-65" />
                     </div>
-                    <h1 className="display-3 text-white animate__animated animate__slideInLeft">About us</h1>
+                    <h1 className="display-3 text-white animate__animated animate__slideInLeft">About Kanban</h1>
                     <h3 className="lead text-white animate__animated animate__slideInLeft">
-                      The kit comes with three pre-built pages to help you get
-                      started faster. You can change the text and images and
-                      you're good to go.
+                    A Kanban board is one of the tools that can be used to implement Kanban to manage work 
+                    at a personal or organizational level. Kanban boards visually depict work at various 
+                    stages of a process using cards to represent work items and columns to represent each stage of the process.
                     </h3>
                     <ul className="list-unstyled mt-5">
                       <li className="py-2">
