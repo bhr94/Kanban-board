@@ -1,5 +1,6 @@
 {
   "name": "kanban-board",
+  "homepage": "https://bhr94.github.io/kanban-board",
   "version": "1.1.0",
   "description": "Kanban Board Trello style",
   "main": "index.js",
@@ -27,7 +28,6 @@
   "bugs": {
     "url": "https://github.com/creativetimofficial/argon-design-system-react/issues"
   },
-  "homepage": "https://bhr94.github.io/kanban-board",
   "scripts": {
     "start": "NODE_PATH=./src react-scripts start",
     "build": "react-scripts build && gulp licenses",
