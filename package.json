@@ -1,5 +1,5 @@
 {
-  "name": "argon-design-system-react",
+  "name": "kanban-board",
   "version": "1.1.0",
   "description": "React version of Argon Design System by Creative Tim",
   "main": "index.js",
@@ -10,27 +10,29 @@
   "keywords": [
     "react",
     "reactjs",
-    "argon",
-    "argon-react",
+    "kanban",
+    "kanban-react",
     "design",
     "design-react",
-    "argon-design",
-    "argon-design-react",
+    "kanban-board",
+    "kanban-trello-board",
     "kit",
     "react-kit",
-    "argon-design-system",
-    "argon-design-system-react",
-    "design-system-react"
+    "trello-kanban-scrum",
+    "kanban-trello-board-react",
+    "scrum-kanban-react"
   ],
   "author": "Creative Tim",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/creativetimofficial/argon-design-system-react/issues"
   },
-  "homepage": "https://demos.creative-tim.com/argon-design-system-react/",
+  "homepage": "https://bhr94.github.io/kanban-board",
   "scripts": {
     "start": "NODE_PATH=./src react-scripts start",
     "build": "react-scripts build && gulp licenses",
+    "predeploy": "npm run build",
+   "deploy": "gh-pages -d build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
@@ -53,6 +55,7 @@
     "bootstrap": "^4.3.1",
     "classnames": "2.2.6",
     "firebase": "^7.21.1",
+    "gh-pages": "^3.1.0",
     "headroom.js": "0.11.0",
     "history": "^4.10.1",
     "modal": "^1.2.0",
