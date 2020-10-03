@@ -26,7 +26,7 @@
   "author": "Creative Tim",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/creativetimofficial/argon-design-system-react/issues"
+    "url": "https://github.com/bhr94/kanban_board"
   },
   "scripts": {
     "start": "react-scripts start",
