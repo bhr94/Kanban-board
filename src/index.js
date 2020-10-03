@@ -52,7 +52,7 @@ ReactDOM.render(
   <Provider store = {store}>
     <Router history = {history}>
     <Switch>
-      <Route path="/dashboard" exact render={props => <Index {...props} />} />
+      {/* <Route path="/dashboard" exact render={props => <Index {...props} />} /> */}
       <Route
         path="/landing-page"
         exact
