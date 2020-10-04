@@ -35,7 +35,6 @@ import {
 } from "reactstrap";
 
 // core components
-import SimpleFooter from "components/Footers/SimpleFooter.js";
 import {connect}  from "react-redux"
 import loadUserAction from "../../redux/actions/loadUserAction";
 
@@ -120,7 +119,7 @@ handleLoadUser =(data) =>{
                           <span className="btn-inner--icon mr-1">
                             <img
                               alt="..."
-                              src={require("assets/img/icons/common/github.svg")}
+                              src={require("../../assets/img/icons/common/github.svg")}
                             />
                           </span>
                           <span className="btn-inner--text">Github</span>
@@ -134,7 +133,7 @@ handleLoadUser =(data) =>{
                           <span className="btn-inner--icon mr-1">
                             <img
                               alt="..."
-                              src={require("assets/img/icons/common/google.svg")}
+                              src={require("../../assets/img/icons/common/google.svg")}
                             />
                           </span>
                           <span className="btn-inner--text">Google</span>
@@ -249,7 +248,7 @@ handleLoadUser =(data) =>{
                 <Col>
                     <img 
                     className ="animate__animated animate__slideInRight"
-                    src={require("assets/img/theme/image2.png")}/>
+                    src={require("../../assets/img/theme/image2.png")}/>
                 </Col>
               </Row>
             </Container>

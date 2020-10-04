@@ -37,8 +37,8 @@ import {
 } from "reactstrap";
 // import {withRouter} from 'react-router'
 // core components
-import DemoNavbar from "components/Navbars/DemoNavbar.js";
-import SimpleFooter from "components/Footers/SimpleFooter.js";
+import DemoNavbar from "../../components/Navbars/DemoNavbar.js";
+import SimpleFooter from "../../components/Footers/SimpleFooter.js";
 import { connect } from "react-redux"
 import loadUserAction from "../../redux/actions/loadUserAction";
 import {provider, firebase} from "../../fbConfig"
@@ -124,7 +124,7 @@ class Login extends React.Component {
               <Col>
                 <img
                   className="animate__animated animate__slideInLeft"
-                  src={require("assets/img/theme/image1.png")}
+                  src={require("../../assets/img/theme/image1.png")}
                 />
               </Col>
               <Col lg="5">
@@ -143,7 +143,7 @@ class Login extends React.Component {
                         <span className="btn-inner--icon mr-1">
                           <img
                             alt="..."
-                            src={require("assets/img/icons/common/github.svg")}
+                            src={require("../../assets/img/icons/common/github.svg")}
                           />
                         </span>
                         <span className="btn-inner--text">Github</span>
@@ -157,7 +157,7 @@ class Login extends React.Component {
                         <span className="btn-inner--icon mr-1">
                           <img
                             alt="..."
-                            src={require("assets/img/icons/common/google.svg")}
+                            src={require("../../assets/img/icons/common/google.svg")}
                           />
                         </span>
                         <span className="btn-inner--text"

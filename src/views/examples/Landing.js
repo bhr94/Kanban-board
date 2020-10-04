@@ -22,7 +22,6 @@ import "animate.css"
 import "../../style.css"
 
 import history from '../../history'
-import Hero from "../IndexSections/Hero.js";
 
 
 // reactstrap components
@@ -43,11 +42,10 @@ import {
 } from "reactstrap";
 
 // core components
-import DemoNavbar from "components/Navbars/DemoNavbar.js";
-import SimpleFooter from "components/Footers/SimpleFooter.js";
+import DemoNavbar from "../../components/Navbars/DemoNavbar.js";
+import SimpleFooter from "../../components/Footers/SimpleFooter.js";
 
 // index page sections
-import Download from "../IndexSections/Download.js";
 
 class Landing extends React.Component {
   state = {};
@@ -107,7 +105,7 @@ class Landing extends React.Component {
                       </div>
                     </Col>
                     <Col>
-                    <img className = "landingImage img-img animate__animated animate__slideInRight" src={require("assets/img/theme/image3.png")}
+                    <img className = "landingImage img-img animate__animated animate__slideInRight" src={require("../../assets/img/theme/image3.png")}
                     style={{ width: "600px", height:"auto" }} />
                     </Col>
                   </Row>
@@ -140,7 +138,7 @@ class Landing extends React.Component {
                   <img
                     alt="..."
                     className="img-fluid floating img-img"
-                    src={require("assets/img/theme/girl-work-on-laptop-1792788-1519329.png")}
+                    src={require("../../assets/img/theme/girl-work-on-laptop-1792788-1519329.png")}
                   />
                 </Col>
                 <Col className="order-md-1" md="6" style ={{color:"white"}}>
@@ -219,7 +217,7 @@ class Landing extends React.Component {
                   <Card className="bg-default shadow border-0 animate__animated animate__slideInRight">
                     <CardImg
                       alt="..."
-                      src={require("assets/img/theme/img-1-1200x1000.jpg")}
+                      src={require("../../assets/img/theme/img-1-1200x1000.jpg")}
                       top
                     />
                     <blockquote className="card-blockquote">
@@ -291,7 +289,7 @@ class Landing extends React.Component {
                     <img
                       alt="..."
                       className="img-center img-fluid"
-                      src={require("assets/img/ill/ill-2.svg")}
+                      src={require("../../assets/img/ill/ill-2.svg")}
                       
                     />
                   </div>
