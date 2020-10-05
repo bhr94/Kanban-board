@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/kanban_board/static/css/main.2eecc1d4.chunk.css",
-    "main.js": "/kanban_board/static/js/main.b40c444b.chunk.js",
-    "main.js.map": "/kanban_board/static/js/main.b40c444b.chunk.js.map",
+    "main.js": "/kanban_board/static/js/main.a51bec62.chunk.js",
+    "main.js.map": "/kanban_board/static/js/main.a51bec62.chunk.js.map",
     "runtime-main.js": "/kanban_board/static/js/runtime-main.3083f1fd.js",
     "runtime-main.js.map": "/kanban_board/static/js/runtime-main.3083f1fd.js.map",
     "static/css/2.e55b4e31.chunk.css": "/kanban_board/static/css/2.e55b4e31.chunk.css",
     "static/js/2.636fad44.chunk.js": "/kanban_board/static/js/2.636fad44.chunk.js",
     "static/js/2.636fad44.chunk.js.map": "/kanban_board/static/js/2.636fad44.chunk.js.map",
     "index.html": "/kanban_board/index.html",
-    "precache-manifest.dd763d239f9adeb85644b0f1d5c144a1.js": "/kanban_board/precache-manifest.dd763d239f9adeb85644b0f1d5c144a1.js",
+    "precache-manifest.f0424673815150e238b8a67fb3d837b5.js": "/kanban_board/precache-manifest.f0424673815150e238b8a67fb3d837b5.js",
     "service-worker.js": "/kanban_board/service-worker.js",
     "static/css/2.e55b4e31.chunk.css.map": "/kanban_board/static/css/2.e55b4e31.chunk.css.map",
     "static/css/main.2eecc1d4.chunk.css.map": "/kanban_board/static/css/main.2eecc1d4.chunk.css.map",
     "static/js/2.636fad44.chunk.js.LICENSE.txt": "/kanban_board/static/js/2.636fad44.chunk.js.LICENSE.txt",
-    "static/js/main.b40c444b.chunk.js.LICENSE.txt": "/kanban_board/static/js/main.b40c444b.chunk.js.LICENSE.txt",
+    "static/js/main.a51bec62.chunk.js.LICENSE.txt": "/kanban_board/static/js/main.a51bec62.chunk.js.LICENSE.txt",
     "static/media/argon-react.png": "/kanban_board/static/media/argon-react.f38ddea9.png",
     "static/media/font-awesome.min.css": "/kanban_board/static/media/fontawesome-webfont.fee66e71.woff",
     "static/media/girl-work-on-laptop-1792788-1519329.png": "/kanban_board/static/media/girl-work-on-laptop-1792788-1519329.2b213388.png",
@@ -32,6 +32,6 @@
     "static/css/2.e55b4e31.chunk.css",
     "static/js/2.636fad44.chunk.js",
     "static/css/main.2eecc1d4.chunk.css",
-    "static/js/main.b40c444b.chunk.js"
+    "static/js/main.a51bec62.chunk.js"
   ]
 }
