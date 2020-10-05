@@ -70,7 +70,7 @@ handleLoadUser =(data) =>{
      password: this.state.password
    });
 
-   fetch('http://localhost:3001/register-page',{
+   fetch('https://git.heroku.com/stark-anchorage-18510.git/register-page',{
      method: "post",
      headers: {'Content-Type': 'application/json'},
      body: bodyContent

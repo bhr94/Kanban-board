@@ -83,7 +83,7 @@ class BoardPage extends React.Component {
             newTitle: this.state.value
         })
 
-        fetch('http://localhost:3001/updateBoardTitle',
+        fetch('https://git.heroku.com/stark-anchorage-18510.git/updateBoardTitle',
             {
                 method: 'post',
                 headers: {
@@ -164,7 +164,7 @@ class BoardPage extends React.Component {
                 boardId: UserData.getCurrentBoardId(),
                 listTitle: this.state.input
             })
-            fetch('http://localhost:3001/createList',
+            fetch('https://git.heroku.com/stark-anchorage-18510.git/createList',
                 {
                     method: 'post',
                     headers: {
@@ -208,7 +208,7 @@ class BoardPage extends React.Component {
                 cardContent: this.state.cardTitle
             })
 
-            fetch('http://localhost:3001/createCard',
+            fetch('https://git.heroku.com/stark-anchorage-18510.git/createCard',
                 {
                     method: "post",
                     headers: {
@@ -266,7 +266,7 @@ class BoardPage extends React.Component {
                 newTitle: this.state.newListTitle
             })
 
-            fetch('http://localhost:3001/updateListTitle',
+            fetch('https://git.heroku.com/stark-anchorage-18510.git/updateListTitle',
                 {
                     method: 'post',
                     headers: {
@@ -322,7 +322,7 @@ class BoardPage extends React.Component {
                 newCardContent: this.state.newCardContent
             })
 
-            fetch('http://localhost:3001/updateCardContent',
+            fetch('https://git.heroku.com/stark-anchorage-18510.git/updateCardContent',
                 {
                     method: 'post',
                     headers: {
@@ -377,7 +377,7 @@ class BoardPage extends React.Component {
                 listId: destList.listid
             })
 
-            fetch('http://localhost:3001/dragCard',
+            fetch('https://git.heroku.com/stark-anchorage-18510.git/dragCard',
                 {
                     method: 'post',
                     headers: {

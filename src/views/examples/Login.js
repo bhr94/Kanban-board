@@ -73,7 +73,7 @@ class Login extends React.Component {
       password: this.state.password
     });
 
-    fetch('http://localhost:3001/login-page', {
+    fetch('https://git.heroku.com/stark-anchorage-18510.git/login-page', {
       method: "post",
       headers: { 'Content-Type': 'application/json' },
       body: bodyContent

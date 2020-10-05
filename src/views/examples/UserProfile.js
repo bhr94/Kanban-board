@@ -78,7 +78,7 @@ class UserProfile extends React.Component {
     })
 
     if (this.state.inputValue.length > 0) {
-      fetch('http://localhost:3001/createBoard',
+      fetch('https://git.heroku.com/stark-anchorage-18510.git/createBoard',
         {
           method: 'post',
           headers: {
