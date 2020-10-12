@@ -1,7 +1,11 @@
+import URL from "../../config"
+
+
+
 const loadCurrentBoardAction =(boardId, idToken) =>(dispatch) =>{
 
     dispatch({type: "LOAD_CURRENT_BOARD_PENDING"});
-    fetch('http://localhost:3001/loadCurrenteBoard',
+    fetch( URL + '/loadCurrenteBoard',
       {
         method: 'post',
         headers: {

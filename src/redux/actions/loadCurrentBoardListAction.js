@@ -1,7 +1,8 @@
-const loadCurrentBoardListAction =(boardId, idToken) =>(dispatch) =>{
+import URL from "../../config"
 
+const loadCurrentBoardListAction =(boardId, idToken) =>(dispatch) =>{
     dispatch({type: "LOAD_CURRENT_BOARD_LIST_PENDING"});
-    fetch('http://localhost:3001/loadCurrentBoardList',
+    fetch(URL + '/loadCurrentBoardList',
       {
         method: 'post',
         headers: {
@@ -18,7 +19,7 @@ const loadCurrentBoardListAction =(boardId, idToken) =>(dispatch) =>{
       .then(async lists => {     
         console.log("hello " + lists) 
         await Promise.all(lists.map(async list => {
-            let response = await fetch('http://localhost:3001/loadCards',
+            let response = await fetch(URL+ '/loadCards',
                 {
                     method: 'post',
                     headers: {

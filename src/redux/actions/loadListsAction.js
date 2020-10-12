@@ -1,4 +1,4 @@
-
+import URL from "../../config"
 
 
 const loadListsAction = (boardId, idToken) => (dispatch) => {
@@ -6,7 +6,7 @@ const loadListsAction = (boardId, idToken) => (dispatch) => {
         boardId: boardId
     })
     dispatch({ type: "LOAD_LISTS_PENDING" });
-    fetch('http://localhost:3001/loadLists',
+    fetch(URL + '/loadLists',
         {
             method: 'post',
             headers: {
@@ -21,7 +21,7 @@ const loadListsAction = (boardId, idToken) => (dispatch) => {
         .then(async lists => {     
             console.log("hello " + lists) 
             await Promise.all(lists.map(async list => {
-                let response = await fetch('http://localhost:3001/loadCards',
+                let response = await fetch(URL+ '/loadCards',
                     {
                         method: 'post',
                         headers: {

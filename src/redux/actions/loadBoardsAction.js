@@ -1,10 +1,11 @@
 
+import URL from "../../config"
 const loadBoardsAction = ( userId, idToken) =>(dispatch) =>{
     const bodyContent = JSON.stringify({
         userId: userId
       });
     dispatch({type: "LOAD_BOARDS_PENDING"});
-    fetch('http://localhost:3001/loadBoards',
+    fetch( URL + '/loadBoards',
       {
         method: 'post',
         headers: {

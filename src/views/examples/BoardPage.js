@@ -29,6 +29,7 @@ import deleteCardFromPreviousListAction from "../../redux/actions/deleteCardFrom
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { UncontrolledPopover, PopoverHeader, PopoverBody } from 'reactstrap';
+import URL from "../../config"
 
 
 
@@ -83,7 +84,7 @@ class BoardPage extends React.Component {
             newTitle: this.state.value
         })
 
-        fetch('https://git.heroku.com/stark-anchorage-18510.git/updateBoardTitle',
+        fetch(URL + '/updateBoardTitle',
             {
                 method: 'post',
                 headers: {
@@ -164,7 +165,7 @@ class BoardPage extends React.Component {
                 boardId: UserData.getCurrentBoardId(),
                 listTitle: this.state.input
             })
-            fetch('https://git.heroku.com/stark-anchorage-18510.git/createList',
+            fetch(URL + '/createList',
                 {
                     method: 'post',
                     headers: {
@@ -208,7 +209,7 @@ class BoardPage extends React.Component {
                 cardContent: this.state.cardTitle
             })
 
-            fetch('https://git.heroku.com/stark-anchorage-18510.git/createCard',
+            fetch(URL + '/createCard',
                 {
                     method: "post",
                     headers: {
@@ -266,7 +267,7 @@ class BoardPage extends React.Component {
                 newTitle: this.state.newListTitle
             })
 
-            fetch('https://git.heroku.com/stark-anchorage-18510.git/updateListTitle',
+            fetch(URL + '/updateListTitle',
                 {
                     method: 'post',
                     headers: {
@@ -322,7 +323,7 @@ class BoardPage extends React.Component {
                 newCardContent: this.state.newCardContent
             })
 
-            fetch('https://git.heroku.com/stark-anchorage-18510.git/updateCardContent',
+            fetch(URL + '/updateCardContent',
                 {
                     method: 'post',
                     headers: {
@@ -377,7 +378,7 @@ class BoardPage extends React.Component {
                 listId: destList.listid
             })
 
-            fetch('https://git.heroku.com/stark-anchorage-18510.git/dragCard',
+            fetch(URL + '/dragCard',
                 {
                     method: 'post',
                     headers: {

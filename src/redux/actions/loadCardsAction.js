@@ -1,11 +1,15 @@
 
+import URL from "../../config"
+
+
+
 
  const loadCardsAction = (listId, boardId, idToken) => (dispatch) => {
     const bodyContent = JSON.stringify({
         listId: listId
     })
     dispatch({ type: "LOAD_CARDS_PENDING" });
-    fetch('http://localhost:3001/loadCards',
+    fetch(URL+ '/loadCards',
         {
             method: 'post',
             headers: {

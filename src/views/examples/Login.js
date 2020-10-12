@@ -42,6 +42,7 @@ import SimpleFooter from "../../components/Footers/SimpleFooter.js";
 import { connect } from "react-redux"
 import loadUserAction from "../../redux/actions/loadUserAction";
 import {provider, firebase} from "../../fbConfig"
+import URL from "../../config"
 
 class Login extends React.Component {
   constructor() {
@@ -73,7 +74,8 @@ class Login extends React.Component {
       password: this.state.password
     });
 
-    fetch('https://git.heroku.com/stark-anchorage-18510.git/login-page', {
+    // fetch('https:/stark-anchorage-18510.herokuapp.com/login-page', {
+      fetch(URL + '/login-page', {
       method: "post",
       headers: { 'Content-Type': 'application/json' },
       body: bodyContent

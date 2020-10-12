@@ -16,7 +16,8 @@
 
 */
 import React from "react";
-import history from "../../history"
+import history from "../../history";
+import URL from "../../config"
 // reactstrap components
 import {
   Button,
@@ -31,66 +32,73 @@ import {
   InputGroup,
   Container,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 
 // core components
-import {connect}  from "react-redux"
+import { connect } from "react-redux";
 import loadUserAction from "../../redux/actions/loadUserAction";
 
 class Register extends React.Component {
-  constructor(){
-      super()
-      this.state ={
-        name: '',
-        mail: '',
-        password:''
-      }
+  constructor() {
+    super();
+    this.state = {
+      name: "",
+      mail: "",
+      password: "",
+    };
   }
-  onEmailChange = (event) =>{
-    this.setState({email: event.target.value})
- }
+  onEmailChange = (event) => {
+    this.setState({ email: event.target.value });
+  };
 
- onPasswordChange = (event) =>{
-    this.setState({password: event.target.value})
- }
+  onPasswordChange = (event) => {
+    this.setState({ password: event.target.value });
+  };
 
- onNameChange = (event) =>{
-  this.setState({name: event.target.value})
-}
+  onNameChange = (event) => {
+    this.setState({ name: event.target.value });
+  };
 
-handleLoadUser =(data) =>{
-  this.props.loadUser(data.user.id, data.user.username, data.user.email, data.token)
-}
+  handleLoadUser = (data) => {
+    this.props.loadUser(
+      data.user.id,
+      data.user.username,
+      data.user.email,
+      data.token
+    );
+  };
 
- onSubmit = () =>{
-   const bodyContent = JSON.stringify({
-     name: this.state.name,
-     email: this.state.email,
-     password: this.state.password
-   });
+  onSubmit = () => {
+    const bodyContent = JSON.stringify({
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+    });
 
-   fetch('https://git.heroku.com/stark-anchorage-18510.git/register-page',{
-     method: "post",
-     headers: {'Content-Type': 'application/json'},
-     body: bodyContent
-   })
-   .then(response => response.json())
-   .then(data =>{
-    if(data){
-        this.handleLoadUser(data);
-        history.push('/user-profile')
-       
-    }
-    else{
-        alert("failed to register");
-    }
-    
-})
-.catch(err=>{
-  console.log("Failed to load the user "+ err)
-})
- }
+    console.log(bodyContent);
+    fetch(URL + '/register-page', {
+    // fetch('http://localhost:3001/register-page', {
+      // mode: "no-cors",
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: bodyContent
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data) {
+          this.handleLoadUser(data);
+          history.push("/user-profile");
+        } else {
+          alert("failed to register");
+        }
+      })
+      .catch((err) => {
+        console.log("Failed to load the user " + err);
+      });
+  };
 
   componentDidMount() {
     document.documentElement.scrollTop = 0;
@@ -101,174 +109,171 @@ handleLoadUser =(data) =>{
     return (
       <>
         <main ref="main">
-            <Container className="pt-lg-7">
-              <Row className="justify-content-center">
-                <Col lg="5">
-                  <Card className="bg-secondary shadow border-0">
-                    <CardHeader className="bg-white pb-5">
-                      <div className="text-muted text-center mb-3">
-                        <small>Sign up with</small>
-                      </div>
-                      <div className="text-center">
-                        <Button
-                          className="btn-neutral btn-icon mr-4"
-                          color="default"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <span className="btn-inner--icon mr-1">
-                            <img
-                              alt="..."
-                              src={require("../../assets/img/icons/common/github.svg")}
-                            />
-                          </span>
-                          <span className="btn-inner--text">Github</span>
-                        </Button>
-                        <Button
-                          className="btn-neutral btn-icon ml-1"
-                          color="default"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <span className="btn-inner--icon mr-1">
-                            <img
-                              alt="..."
-                              src={require("../../assets/img/icons/common/google.svg")}
-                            />
-                          </span>
-                          <span className="btn-inner--text">Google</span>
-                        </Button>
-                      </div>
-                    </CardHeader>
-                    <CardBody className="px-lg-5 py-lg-5">
-                      <div className="text-center text-muted mb-4">
-                        <small>Or sign up with credentials</small>
-                      </div>
-                      <Form role="form">
-                        <FormGroup>
-                          <InputGroup className="input-group-alternative mb-3">
-                            <InputGroupAddon addonType="prepend">
-                              <InputGroupText>
-                                <i className="ni ni-hat-3" />
-                              </InputGroupText>
-                            </InputGroupAddon>
+          <Container className="pt-lg-7">
+            <Row className="justify-content-center">
+              <Col lg="5">
+                <Card className="bg-secondary shadow border-0">
+                  <CardHeader className="bg-white pb-5">
+                    <div className="text-muted text-center mb-3">
+                      <small>Sign up with</small>
+                    </div>
+                    <div className="text-center">
+                      <Button
+                        className="btn-neutral btn-icon mr-4"
+                        color="default"
+                        href="#pablo"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        <span className="btn-inner--icon mr-1">
+                          <img
+                            alt="..."
+                            src={require("../../assets/img/icons/common/github.svg")}
+                          />
+                        </span>
+                        <span className="btn-inner--text">Github</span>
+                      </Button>
+                      <Button
+                        className="btn-neutral btn-icon ml-1"
+                        color="default"
+                        href="#pablo"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        <span className="btn-inner--icon mr-1">
+                          <img
+                            alt="..."
+                            src={require("../../assets/img/icons/common/google.svg")}
+                          />
+                        </span>
+                        <span className="btn-inner--text">Google</span>
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardBody className="px-lg-5 py-lg-5">
+                    <div className="text-center text-muted mb-4">
+                      <small>Or sign up with credentials</small>
+                    </div>
+                    <Form role="form">
+                      <FormGroup>
+                        <InputGroup className="input-group-alternative mb-3">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="ni ni-hat-3" />
+                            </InputGroupText>
+                          </InputGroupAddon>
 
-                        {/* Added onChange method into the input */}
-                            <Input 
-                            onChange = {this.onNameChange}
-                            placeholder="Name" 
-                            type="text" 
-                            />
-
-                          </InputGroup>
-                        </FormGroup>
-                        <FormGroup>
-                          <InputGroup className="input-group-alternative mb-3">
-                            <InputGroupAddon addonType="prepend">
-                              <InputGroupText>
-                                <i className="ni ni-email-83" />
-                              </InputGroupText>
-                            </InputGroupAddon>
+                          {/* Added onChange method into the input */}
+                          <Input
+                            onChange={this.onNameChange}
+                            placeholder="Name"
+                            type="text"
+                          />
+                        </InputGroup>
+                      </FormGroup>
+                      <FormGroup>
+                        <InputGroup className="input-group-alternative mb-3">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="ni ni-email-83" />
+                            </InputGroupText>
+                          </InputGroupAddon>
                           {/* Added onEmailChange method into the input */}
-                            <Input 
-                            onChange = {this.onEmailChange}
-                            placeholder="Email" 
-                            type="email" 
+                          <Input
+                            onChange={this.onEmailChange}
+                            placeholder="Email"
+                            type="email"
+                          />
+                        </InputGroup>
+                      </FormGroup>
+                      <FormGroup>
+                        <InputGroup className="input-group-alternative">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="ni ni-lock-circle-open" />
+                            </InputGroupText>
+                          </InputGroupAddon>
+
+                          {/* Added onPasswordChange method into the input */}
+                          <Input
+                            onChange={this.onPasswordChange}
+                            placeholder="Password"
+                            type="password"
+                            autoComplete="off"
+                          />
+                        </InputGroup>
+                      </FormGroup>
+                      <div className="text-muted font-italic">
+                        <small>
+                          password strength:{" "}
+                          <span className="text-success font-weight-700">
+                            strong
+                          </span>
+                        </small>
+                      </div>
+                      <Row className="my-4">
+                        <Col xs="12">
+                          <div className="custom-control custom-control-alternative custom-checkbox">
+                            <input
+                              className="custom-control-input"
+                              id="customCheckRegister"
+                              type="checkbox"
                             />
-
-                          </InputGroup>
-                        </FormGroup>
-                        <FormGroup>
-                          <InputGroup className="input-group-alternative">
-                            <InputGroupAddon addonType="prepend">
-                              <InputGroupText>
-                                <i className="ni ni-lock-circle-open" />
-                              </InputGroupText>
-                            </InputGroupAddon>
-
-                        {/* Added onPasswordChange method into the input */}
-                            <Input
-                              onChange = {this.onPasswordChange}
-                              placeholder="Password"
-                              type="password"
-                              autoComplete="off"
-                            />
-
-                          </InputGroup>
-                        </FormGroup>
-                        <div className="text-muted font-italic">
-                          <small>
-                            password strength:{" "}
-                            <span className="text-success font-weight-700">
-                              strong
-                            </span>
-                          </small>
-                        </div>
-                        <Row className="my-4">
-                          <Col xs="12">
-                            <div className="custom-control custom-control-alternative custom-checkbox">
-                              <input
-                                className="custom-control-input"
-                                id="customCheckRegister"
-                                type="checkbox"
-                              />
-                              <label
-                                className="custom-control-label"
-                                htmlFor="customCheckRegister"
-                              >
-                                <span>
-                                  I agree with the{" "}
-                                  <a
-                                    href="#pablo"
-                                    onClick={e => e.preventDefault()}
-                                  >
-                                    Privacy Policy
-                                  </a>
-                                </span>
-                              </label>
-                            </div>
-                          </Col>
-                        </Row>
-                        <div className="text-center">
-
-                      {/* Added onSubmit into the button */}
-                          <Button
-                            onClick = {this.onSubmit}
-                            className="mt-4"
-                            color="primary"
-                            type="button"
-                          >
-                            Create account
-                          </Button>
-                        </div>
-                      </Form>
-                    </CardBody>
-                  </Card>
-                </Col>
-                <Col>
-                    <img 
-                    className ="animate__animated animate__slideInRight"
-                    src={require("../../assets/img/theme/image2.png")}/>
-                </Col>
-              </Row>
-            </Container>
+                            <label
+                              className="custom-control-label"
+                              htmlFor="customCheckRegister"
+                            >
+                              <span>
+                                I agree with the{" "}
+                                <a
+                                  href="#pablo"
+                                  onClick={(e) => e.preventDefault()}
+                                >
+                                  Privacy Policy
+                                </a>
+                              </span>
+                            </label>
+                          </div>
+                        </Col>
+                      </Row>
+                      <div className="text-center">
+                        {/* Added onSubmit into the button */}
+                        <Button
+                          onClick={this.onSubmit}
+                          className="mt-4"
+                          color="primary"
+                          type="button"
+                        >
+                          Create account
+                        </Button>
+                      </div>
+                    </Form>
+                  </CardBody>
+                </Card>
+              </Col>
+              <Col>
+                <img
+                  className="animate__animated animate__slideInRight"
+                  src={require("../../assets/img/theme/image2.png")}
+                />
+              </Col>
+            </Row>
+          </Container>
         </main>
       </>
     );
   }
 }
 
-const mapStateToProps =(state) =>{
+const mapStateToProps = (state) => {
   return {
-      user:state.user
-  }
-}
+    user: state.user,
+  };
+};
 
-const mapDispatchToProps =(dispatch) =>{
+const mapDispatchToProps = (dispatch) => {
   return {
-    loadUser:( userId, userName, email, idToken) => dispatch(loadUserAction(userId, userName, email, idToken))
-  }
-
-}
+    loadUser: (userId, userName, email, idToken) =>
+      dispatch(loadUserAction(userId, userName, email, idToken)),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

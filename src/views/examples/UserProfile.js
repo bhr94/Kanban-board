@@ -16,6 +16,7 @@ import loadCurrentBoardListAction from "../../redux/actions/loadCurrentBoardList
 import loadListsAction from "../../redux/actions/loadListsAction"
 import removeCurrentBoardDataAction from "../../redux/actions/removeCurrentBoardDataAction"
 import addNewBoardAction from "../../redux/actions/addNewBoardAction"
+import URL from "../../config"
 
 import {
   Button,
@@ -78,7 +79,7 @@ class UserProfile extends React.Component {
     })
 
     if (this.state.inputValue.length > 0) {
-      fetch('https://git.heroku.com/stark-anchorage-18510.git/createBoard',
+      fetch( URL + '/createBoard',
         {
           method: 'post',
           headers: {
