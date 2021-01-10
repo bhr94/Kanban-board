@@ -507,6 +507,9 @@ pre:after {
 }
 
 .list-card {
+  display: flex;
+  /* align-items: center; */
+  justify-content: space-evenly;
   background-color: #00ebc7;
   border-radius: 3px;
   box-shadow: 0 1px 0 rgba(9,30,66,.25);
@@ -517,11 +520,13 @@ pre:after {
   min-height: 20px;
   position: relative;
   text-decoration: none;
-  z-index: 0;
+  /* z-index: 0; */
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   padding: 10px;
   text-align: left;
   margin: 10px;
+  overflow: hidden;
+  height: fit-content;
 }
 
 

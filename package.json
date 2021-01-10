@@ -1,12 +1,12 @@
 {
   "name": "kanban-board",
-  "homepage": "https://bhr94.github.io/kanban_board",
+  "homepage": ".",
   "version": "1.1.0",
   "description": "Kanban Board Trello style",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bhr94/kanban_board"
+    "url": "."
   },
   "keywords": [
     "react",
